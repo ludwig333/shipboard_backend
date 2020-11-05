@@ -30,9 +30,9 @@ class AuthController extends BaseAPIController
     public function register(UserRegistrationRequest $request)
     {
        try {
-           $user = User::create($request->getRegistrationData());
+           return $request->getRegistrationData();
 
-//           event(new Registered($user));
+           $user = User::create($request->getRegistrationData());
 
            return $this->sendResponse($this->getUserWithToken($user), 'User registered successfully.', Response::HTTP_CREATED);
        } catch (\Exception $exception) {
@@ -74,7 +74,7 @@ class AuthController extends BaseAPIController
      */
     public function userInfo()
     {
-        return new UserResource(auth()->user);
+        return new UserResource(auth()->user());
     }
 
     /**
@@ -86,7 +86,8 @@ class AuthController extends BaseAPIController
     {
         return [
             'token' => $user->createToken('ShipboardBotMaker')->accessToken,
-            'name' => $user->name
+            'fname' => $user->first_name,
+            'lname' => $user->last_name,
         ];
     }
 

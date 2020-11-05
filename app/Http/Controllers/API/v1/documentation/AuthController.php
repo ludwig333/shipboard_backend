@@ -21,10 +21,16 @@
  *             )
  *         )
  *     ),
- *      @OA\Response(
- *          response="200",
- *          description="Everything is fine",
- *      )
+ *     @OA\Response(
+ *         response=200,
+ *         description="successful operation",
+ *         @OA\JsonContent()
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Invalid Data",
+ *         @OA\JsonContent()
+ *     ),
  * )
  */
 
@@ -69,10 +75,16 @@
  *             )
  *         )
  *     ),
- *      @OA\Response(
- *          response="200",
- *          description="Everything is fine",
- *      )
+ *     @OA\Response(
+ *         response=200,
+ *         description="successful operation",
+ *         @OA\JsonContent()
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Invalid Data",
+ *         @OA\JsonContent()
+ *     ),
  * )
  */
 
@@ -96,10 +108,16 @@
  *             )
  *         )
  *     ),
- *      @OA\Response(
- *          response="200",
- *          description="Everything is fine",
- *      )
+ *     @OA\Response(
+ *         response=200,
+ *         description="successful operation",
+ *         @OA\JsonContent()
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Invalid Data",
+ *         @OA\JsonContent()
+ *     ),
  * )
  */
 
@@ -133,10 +151,16 @@
  *             )
  *         )
  *     ),
- *      @OA\Response(
- *          response="200",
- *          description="Everything is fine",
- *      )
+ *     @OA\Response(
+ *         response=200,
+ *         description="successful operation",
+ *         @OA\JsonContent()
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Invalid Data",
+ *         @OA\JsonContent()
+ *     ),
  * )
  */
 

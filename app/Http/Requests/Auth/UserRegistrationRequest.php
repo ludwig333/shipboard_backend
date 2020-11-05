@@ -31,6 +31,21 @@ class UserRegistrationRequest extends FormRequest
         ];
     }
 
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'email.required' => 'Email is required!',
+            'name.required' => 'Name is required!',
+            'password.required' => 'Password is required!'
+        ];
+    }
+
+
     public function getRegistrationData()
     {
         return [
@@ -40,4 +55,5 @@ class UserRegistrationRequest extends FormRequest
             'password' => bcrypt($this->input('password'))
         ];
     }
+
 }
