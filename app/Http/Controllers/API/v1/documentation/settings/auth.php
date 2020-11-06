@@ -1,6 +1,11 @@
 <?php
 /**
  * @OA\SecurityScheme(
+ *     @OA\Flow(
+ *         flow="clientCredentials",
+ *         tokenUrl="oauth/token",
+ *         scopes={}
+ *     ),
  *     securityScheme="bearerAuth",
  *     in="header",
  *     type="http",
@@ -8,12 +13,5 @@
  *     name="oauth2",
  *     scheme="bearer",
  *     bearerFormat="JWT",
- *   @OA\Flow(
- *      authorizationUrl="/api/login",
- *      tokenUrl= "/api/login",
- *      flow="password",
- *      scopes={
- *      }
- *   )
  * )
  */

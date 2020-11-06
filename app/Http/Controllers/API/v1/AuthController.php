@@ -17,6 +17,7 @@ use App\Http\Requests\Auth\ForgotPasswordRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Message;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use Illuminate\Http\Request;
 
 class AuthController extends BaseAPIController
 {
@@ -70,11 +71,12 @@ class AuthController extends BaseAPIController
     /**
      * Returns the data resource of logged in user
      *
-     * @return UserResource
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function userInfo()
+    public function userInfo(Request $request)
     {
-        return new UserResource(auth()->user());
+        return $this->sendResponse(new UserResource($request->user()), 'Logged in user returned successfully');
     }
 
     /**

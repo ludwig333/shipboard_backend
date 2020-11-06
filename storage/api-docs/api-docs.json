@@ -64,7 +64,8 @@
                             }
                         }
                     }
-                }
+                },
+                "security": []
             }
         },
         "/api/v1/register": {
@@ -124,7 +125,8 @@
                             }
                         }
                     }
-                }
+                },
+                "security": []
             }
         },
         "/api/v1/forgot": {
@@ -168,7 +170,8 @@
                             }
                         }
                     }
-                }
+                },
+                "security": []
             }
         },
         "/api/v1/reset": {
@@ -220,7 +223,8 @@
                             }
                         }
                     }
-                }
+                },
+                "security": []
             }
         },
         "/api/v1/logout": {
@@ -232,28 +236,53 @@
                 "operationId": "user_logout",
                 "responses": {
                     "200": {
-                        "description": "Everything is fine"
+                        "description": "Everything is fine",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/user": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Returns the logged in user",
+                "operationId": "auth_user",
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
     "components": {
         "securitySchemes": {
             "bearerAuth": {
-                "type": "http",
-                "description": "Oauth2 security",
-                "name": "oauth2",
-                "in": "header",
-                "flows": {
-                    "password": {
-                        "authorizationUrl": "/api/login",
-                        "tokenUrl": "/api/login",
-                        "scopes": {}
-                    }
-                },
-                "bearerFormat": "JWT",
-                "scheme": "bearer"
+                "type": "apiKey",
+                "description": "A short description for security scheme",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     },

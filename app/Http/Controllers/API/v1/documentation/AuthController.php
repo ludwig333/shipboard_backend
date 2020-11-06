@@ -5,6 +5,7 @@
  *      operationId ="user_login",
  *      tags={"Authentication"},
  *      summary = "Login and return access token",
+ *     security={},
  *      @OA\RequestBody(
  *         @OA\MediaType(
  *             mediaType="application/json",
@@ -41,6 +42,7 @@
  *      operationId ="user_register",
  *      tags={"Authentication"},
  *      summary = "Register and return access token",
+ *      security={},
  *      @OA\RequestBody(
  *         @OA\MediaType(
  *             mediaType="application/json",
@@ -94,7 +96,8 @@
  *      operationId ="forgot_password",
  *      tags={"Authentication"},
  *      summary = "Sends email to change password",
- *      *      @OA\RequestBody(
+ *     security={},
+ *      @OA\RequestBody(
  *         @OA\MediaType(
  *             mediaType="application/json",
  *             @OA\Schema(
@@ -127,6 +130,7 @@
  *      operationId ="rest_password",
  *      tags={"Authentication"},
  *      summary = "Reset user password",
+ *      security={},
  *      @OA\RequestBody(
  *         @OA\MediaType(
  *             mediaType="application/json",
@@ -170,9 +174,27 @@
  *      operationId ="user_logout",
  *      tags={"Authentication"},
  *      summary = "Revokes the access token of logged user",
+ *      security={{"bearerAuth":{}}},
  *      @OA\Response(
  *          response="200",
  *          description="Everything is fine",
+ *          @OA\JsonContent()
  *      )
+ * )
+ */
+
+
+/**
+ * @OA\Get(
+ *      path="/api/v1/user",
+ *      operationId ="auth_user",
+ *      tags={"Authentication"},
+ *      summary = "Returns the logged in user",
+ *      security={{"bearerAuth":{}}},
+ *      @OA\Response(
+ *          response="200",
+ *          description="Everything is fine",
+ *          @OA\JsonContent()
+ *      ),
  * )
  */
