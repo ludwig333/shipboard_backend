@@ -20,6 +20,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->seed([
             'UsersTableSeeder',
+            'BotsTableSeeder',
             'FlowsTableSeeder',
             'FoldersTableSeeder'
         ]);
