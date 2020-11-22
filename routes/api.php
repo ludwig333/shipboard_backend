@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\v1\AuthController;
+use App\Http\Controllers\API\v1\FolderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user', [AuthController::class, 'userInfo'])->name('auth-user');
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+        /** Folder API Endpoints Start */
+        Route::apiResource('folders', FolderController::class);
+        /** Folder API Endpoints End */
     });
 });
 

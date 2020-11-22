@@ -274,6 +274,30 @@
                     }
                 ]
             }
+        },
+        "/api/v1/folders": {
+            "get": {
+                "tags": [
+                    "Folder"
+                ],
+                "summary": "Return list of folder inside flow",
+                "operationId": "get_folders",
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
