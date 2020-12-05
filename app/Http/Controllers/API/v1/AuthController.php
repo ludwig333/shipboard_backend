@@ -31,8 +31,6 @@ class AuthController extends BaseAPIController
     public function register(UserRegistrationRequest $request)
     {
        try {
-           return $request->getRegistrationData();
-
            $user = User::create($request->getRegistrationData());
 
            return $this->sendResponse($this->getUserWithToken($user), 'User registered successfully.', Response::HTTP_CREATED);
