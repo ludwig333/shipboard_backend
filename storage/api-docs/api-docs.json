@@ -125,7 +125,7 @@
                 "security": []
             }
         },
-        "/api/v1/forgot": {
+        "/api/v1/forgot-password": {
             "post": {
                 "tags": [
                     "Authentication"
@@ -170,7 +170,7 @@
                 "security": []
             }
         },
-        "/api/v1/reset": {
+        "/api/v1/reset-password": {
             "post": {
                 "tags": [
                     "Authentication"

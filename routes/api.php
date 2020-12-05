@@ -24,8 +24,8 @@ use App\Http\Controllers\API\v1\BotController;
 Route::group(['prefix' => 'v1'], function () {
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('forgot', [AuthController::class, 'forgot'])->name('forgot');
-    Route::post('reset', [AuthController::class, 'reset'])->name('reset');
+    Route::post('forgot-password', [AuthController::class, 'forgot'])->name('forgot');
+    Route::post('reset-password', [AuthController::class, 'reset'])->name('reset');
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user', [AuthController::class, 'userInfo'])->name('auth-user');

@@ -87,7 +87,7 @@
 
 /**
  * @OA\Post(
- *      path="/api/v1/forgot",
+ *      path="/api/v1/forgot-password",
  *      operationId ="forgot_password",
  *      tags={"Authentication"},
  *      summary = "Sends email to change password",
@@ -121,7 +121,7 @@
 
 /**
  * @OA\Post(
- *      path="/api/v1/reset",
+ *      path="/api/v1/reset-password",
  *      operationId ="rest_password",
  *      tags={"Authentication"},
  *      summary = "Reset user password",
