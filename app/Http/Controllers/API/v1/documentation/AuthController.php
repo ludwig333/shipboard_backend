@@ -48,11 +48,7 @@
  *             mediaType="application/json",
  *             @OA\Schema(
  *                 @OA\Property(
- *                     property="fname",
- *                     type="string"
- *                 ),
- *                 @OA\Property(
- *                     property="lname",
+ *                     property="name",
  *                     type="string"
  *                 ),
  *                 @OA\Property(
@@ -68,8 +64,7 @@
  *                     type="string"
  *                 ),
  *                 example={
- *                      "fname" : "Jane",
- *                      "lname" : "Doe",
+ *                      "name" : "Jane Doe",
  *                      "email": "jane.doe@email.com",
  *                      "password": "Password@123",
  *                      "password_confirmation": "Password@123"

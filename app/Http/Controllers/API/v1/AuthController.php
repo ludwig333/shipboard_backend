@@ -88,8 +88,8 @@ class AuthController extends BaseAPIController
     {
         return [
             'token' => $user->createToken('ShipboardBotMaker')->accessToken,
-            'fname' => $user->first_name,
-            'lname' => $user->last_name,
+            'name' => $user->name,
+            'email' => $user->email,
         ];
     }
 

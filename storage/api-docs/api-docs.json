@@ -80,10 +80,7 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "fname": {
-                                        "type": "string"
-                                    },
-                                    "lname": {
+                                    "name": {
                                         "type": "string"
                                     },
                                     "email": {
@@ -98,8 +95,7 @@
                                 },
                                 "type": "object",
                                 "example": {
-                                    "fname": "Jane",
-                                    "lname": "Doe",
+                                    "name": "Jane Doe",
                                     "email": "jane.doe@email.com",
                                     "password": "Password@123",
                                     "password_confirmation": "Password@123"

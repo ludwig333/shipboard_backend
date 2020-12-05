@@ -24,8 +24,7 @@ class UserRegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'fname' => 'required|min:3',
-            'lname' => 'required|min:3',
+            'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:8'
         ];
@@ -49,8 +48,7 @@ class UserRegistrationRequest extends FormRequest
     public function getRegistrationData()
     {
         return [
-            'first_name' => $this->input('fname'),
-            'last_name' => $this->input('lname'),
+            'name' => $this->input('name'),
             'email' => $this->input('email'),
             'password' => bcrypt($this->input('password'))
         ];

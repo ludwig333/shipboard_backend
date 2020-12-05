@@ -13,8 +13,7 @@ class AuthControllerTest extends TestCase {
      */
     public function can_register_user() {
         $response = $this->post(route('register'), [
-            'fname' => $fname = 'John',
-            'lname' => $lname = 'Doe',
+            'name' => $name = 'John Joe',
             'email' => $email = 'john.doe@email.com',
             'password' => 'Password123',
             'password_confirmation' => 'Password123'
@@ -24,8 +23,8 @@ class AuthControllerTest extends TestCase {
             'success' => true,
             'message' => 'User registered successfully.',
             'data' => [
-                'fname' => $fname,
-                'lname' => $lname
+                'name' => $name,
+                'email' => $email
             ]
         ])->assertStatus(201);
 
