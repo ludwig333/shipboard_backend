@@ -10,6 +10,12 @@ class Flow extends Model
 {
     use HasFactory;
 
+    protected $table="flows";
+    protected $fillable = [
+      'name',
+      'bot_id'
+    ];
+
     /**
      * Bootstrap the model and its traits.
      *
@@ -22,5 +28,10 @@ class Flow extends Model
         static::creating(function ($bot) {
             $bot->uuid = Str::uuid();
         });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
     }
 }

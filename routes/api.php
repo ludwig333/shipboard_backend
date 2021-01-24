@@ -5,6 +5,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\v1\AuthController;
 use App\Http\Controllers\API\v1\FolderController;
 use App\Http\Controllers\API\v1\BotController;
+use App\Models\Flow;
+use App\Models\Message;
+use App\Models\Content;
+use App\Models\Text;
+use App\Http\Controllers\API\v1\FlowController;
+use App\Http\Controllers\API\v1\MessageController;
+use App\Http\Controllers\API\v1\ContentController;
+use App\Http\Controllers\API\v1\TextController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +46,22 @@ Route::group(['prefix' => 'v1'], function () {
         /** Folder API Endpoints Start */
         Route::apiResource('folders', FolderController::class);
         /** Folder API Endpoints End */
+
+        /** Flow API Endpoints Start */
+        Route::apiResource('flows', FlowController::class);
+        /** Flow API Endpoints End */
+
+        /** Message API Endpoints Start */
+        Route::apiResource('messages', MessageController::class);
+        /** Message API Endpoints End */
+
+        /** Content API Endpoints Start */
+        Route::apiResource('contents', ContentController::class);
+        /** Content API Endpoints End */
+
+        /** Text API Endpoints Start */
+        Route::apiResource('texts', TextController::class);
+        /** Text API Endpoints End */
 
     });
 });

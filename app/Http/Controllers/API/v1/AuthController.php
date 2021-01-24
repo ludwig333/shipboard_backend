@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Message;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends BaseAPIController
 {
@@ -48,6 +49,7 @@ class AuthController extends BaseAPIController
     public function login(UserLoginRequest $request)
     {
         try {
+            Log::info('loggin in');
             if(auth()->attempt($request->getLoginCredentials())) {
                 return $this->sendResponse($this->getUserWithToken(auth()->user()), 'Logged in successfully.', Response::HTTP_OK);
             } else {

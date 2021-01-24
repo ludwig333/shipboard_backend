@@ -17,9 +17,9 @@ class CreateFlowsTable extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->string('name');
-            $table->bigInteger('user_id');
+            $table->bigInteger('bot_id');
             $table->timestamps();
-            $table->unique(['name', 'user_id']);
+            $table->unique(['name', 'bot_id']);
         });
     }
 

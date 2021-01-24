@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Bot;
+namespace App\Http\Requests\Flow;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Models\Flow;
 
-class CreateBotRequest extends FormRequest
+class UpdateFlowRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,23 +26,13 @@ class CreateBotRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:3|max:255|unique:bots,name,NULL,user_id',
+            'name' => "required|string|min:3|unique:flows,name,NULL,bot_id",
         ];
     }
 
-    /**
-     * Get the input values from create bot form
-     *
-     * @return array
-     */
-    public function validatedData()
-    {
-        $data = $this->only([
-            'name',
+    public function validatedData() {
+        return $this->only([
+            'name'
         ]);
-
-        $data['user_id'] = auth()->user()->id;
-
-        return $data;
     }
 }
