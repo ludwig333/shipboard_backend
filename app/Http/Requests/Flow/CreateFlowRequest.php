@@ -5,6 +5,8 @@ namespace App\Http\Requests\Flow;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Bot;
 use App\Models\Flow;
+use Illuminate\Validation\Rule;
+use App\Rules\ValidateUniqueFlowName;
 
 class CreateFlowRequest extends FormRequest
 {
@@ -25,8 +27,10 @@ class CreateFlowRequest extends FormRequest
      */
     public function rules()
     {
+        $botId = Bot::where('uuid', $this->input('bot'))->first()->id;
+
         return [
-            'name' => "required|string|min:3|unique:flows,name,NULL,bot_id",
+            'name' => ['required','string','min:3', new ValidateUniqueFlowName($botId)],
             'bot' => 'required|exists:bots,uuid'
         ];
     }

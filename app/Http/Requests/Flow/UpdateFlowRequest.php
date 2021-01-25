@@ -5,6 +5,7 @@ namespace App\Http\Requests\Flow;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\Flow;
+use App\Rules\ValidateUniqueFlowName;
 
 class UpdateFlowRequest extends FormRequest
 {
@@ -25,8 +26,9 @@ class UpdateFlowRequest extends FormRequest
      */
     public function rules()
     {
+        $botId = $this->route('flow')->bot_id;
         return [
-            'name' => "required|string|min:3|unique:flows,name,NULL,bot_id",
+            'name' => ['required','string','min:3', new ValidateUniqueFlowName($botId)],
         ];
     }
 
