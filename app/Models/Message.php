@@ -27,13 +27,17 @@ class Message extends Model
     {
         parent::boot();
 
-        static::creating(function ($bot) {
-            $bot->uuid = Str::uuid();
+        static::creating(function ($message) {
+            $message->uuid = Str::uuid();
         });
     }
 
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public function contents() {
+        return $this->hasMany(Content::class);
     }
 }
