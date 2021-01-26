@@ -24,6 +24,7 @@ class UpdateMessageRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => 'sometimes|min:3',
             'position_x' => 'sometimes',
             'position_y' => 'sometimes'
         ];
