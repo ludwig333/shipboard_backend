@@ -89,9 +89,4 @@ class FlowController extends BaseAPIController
         }
 
     }
-//
-//    public function show(Bot $bot)
-//    {
-//        return $this->sendResponse(new BotResource($bot), 'Bot retrieved successfully.', Response::HTTP_OK);
-//    }
 }

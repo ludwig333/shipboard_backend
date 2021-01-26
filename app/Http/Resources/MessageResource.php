@@ -14,6 +14,18 @@ class MessageResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+       return [
+           'id' => $this->uuid,
+           'name' => $this->name,
+           'position' => [
+               'x' => $this->position_x,
+               'y' => $this->position_y
+           ],
+           'children' => [
+           ],
+           'isHover' => false,
+           'isSelected' => false,
+           'height' => 200,
+       ];
     }
 }
