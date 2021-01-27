@@ -33,4 +33,8 @@ class Text extends Model
     {
         return 'uuid';
     }
+
+    public function content() {
+        return $this->belongsTo(Content::class, 'id', 'content_id');
+    }
 }

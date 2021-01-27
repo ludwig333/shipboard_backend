@@ -63,20 +63,25 @@ class TextController extends BaseAPIController
     /**
      * Delete message
      *
-     * @param Flow $flow
+     * @param Text $text
      * @return \Illuminate\Http\JsonResponse|mixed
      */
-    public function destroy(Message $message)
+    public function destroy(Text $text)
     {
         try {
-            $message->delete();
+            DB::beginTransaction();
 
-            return $this->sendResponse([], 'Message deleted successfully.', Response::HTTP_NO_CONTENT);
+            $text->content->delete();
+            $text->delete();
+
+            DB::commit();
+            return $this->sendResponse([], 'Text deleted successfully.', Response::HTTP_NO_CONTENT);
 
         } catch (\Throwable $exception) {
+            DB::rollBack();
             Log::error($exception);
 
-            return $this->sendError('Failed to delete message.');
+            return $this->sendError('Failed to delete text.');
         }
     }
 
