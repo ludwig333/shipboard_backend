@@ -25,9 +25,9 @@ class CreateTextRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => 'required|min:2',
+            'text' => 'required|min:2',
             'message' => 'required|exists:messages,uuid',
-            'index' => 'required|integer'
+            'position' => 'required|integer'
         ];
     }
 }

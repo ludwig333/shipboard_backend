@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Resources\TextResource;
 use Illuminate\Http\Response;
+use App\Http\Requests\Text\UpdateTextRequest;
 
 class TextController extends BaseAPIController
 {
@@ -38,24 +39,24 @@ class TextController extends BaseAPIController
             $message = Message::where('uuid', $request->input('message'))->first();
 
             $text = Text::create([
-                'body' => $request->input('body')
+                'body' => $request->input('text')
             ]);
 
             Content::create([
                 'message_id' => $message->id,
                 'content_type' => Text::class,
                 'content_id' => $text->id,
-                'index' => $request->input('index')
+                'index' => $request->input('position')
             ]);
             DB::commit();
 
-            return $this->sendResponse(new TextResource($message), 'Message created successfully.', Response::HTTP_CREATED);
+            return $this->sendResponse(new TextResource($text), 'Text created successfully.', Response::HTTP_CREATED);
 
         } catch (\Throwable $exception) {
             DB::rollBack();
             Log::error($exception);
 
-            return $this->sendError('Failed to create message.');
+            return $this->sendError('Failed to create text.');
         }
     }
 
@@ -79,17 +80,19 @@ class TextController extends BaseAPIController
         }
     }
 
-    public function update(Message $message, UpdateMessageRequest $request)
+    public function update(Text $text, UpdateTextRequest $request)
     {
         try {
-            $message->update($request->all());
+            $text->update([
+                'body' => $request->input('text')
+            ]);
 
-            return $this->sendResponse(new MessageResource($message), 'Message updated successfully.', Response::HTTP_ACCEPTED);
+            return $this->sendResponse(new TextResource($text), 'Text updated successfully.', Response::HTTP_ACCEPTED);
 
         } catch (\Throwable $exception) {
             Log::error($exception);
 
-            return $this->sendError('Failed to update message.');
+            return $this->sendError('Failed to update text.');
         }
 
     }

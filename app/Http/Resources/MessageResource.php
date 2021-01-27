@@ -21,8 +21,7 @@ class MessageResource extends JsonResource
                'x' => $this->position_x,
                'y' => $this->position_y
            ],
-           'children' => [
-           ],
+           'children' => $this->getContents(),
            'isHover' => false,
            'isSelected' => false,
            'height' => 200,

@@ -21,4 +21,8 @@ class Content extends Model
     {
         return $this->belongsTo(Message::class, 'message_id');
     }
+
+    public function child() {
+        return $this->belongsTo($this->content_type, 'content_id');
+    }
 }
