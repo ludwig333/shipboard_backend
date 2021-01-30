@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Constants\BuilderContentType;
+use Illuminate\Support\Facades\Storage;
 
 class ImageResource extends JsonResource
 {
@@ -14,6 +16,12 @@ class ImageResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->uuid,
+            'type' => BuilderContentType::IMAGE,
+            'height' => 150,
+            'imagePreviewUrl' => $this->getImage(),
+            'selectedImage' => 'null'
+        ];
     }
 }

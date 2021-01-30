@@ -13,6 +13,7 @@ use App\Http\Controllers\API\v1\FlowController;
 use App\Http\Controllers\API\v1\MessageController;
 use App\Http\Controllers\API\v1\ContentController;
 use App\Http\Controllers\API\v1\TextController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,11 @@ Route::group(['prefix' => 'v1'], function () {
 
         /** Text API Endpoints Start */
         Route::apiResource('texts', TextController::class);
+        /** Text API Endpoints End */
+
+        /** Text API Endpoints Start */
+        Route::post('/image/upload-image/{image}', [ImageController::class, 'uploadImage']);
+        Route::apiResource('images', ImageController::class);
         /** Text API Endpoints End */
 
     });
