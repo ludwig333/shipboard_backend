@@ -15,6 +15,7 @@ class CreateCardGroupsTable extends Migration
     {
         Schema::create('card_groups', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->timestamps();
         });
     }

@@ -17,6 +17,22 @@ class Content extends Model
         'index'
     ];
 
+    /**
+     * The "booted" method of the model.
+     *
+     * This model events deletes the child of content when content is deleting
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($content) {
+            $content->child->delete();
+        });
+    }
+
     public function message()
     {
         return $this->belongsTo(Message::class, 'message_id');

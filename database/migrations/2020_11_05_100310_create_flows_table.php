@@ -17,9 +17,14 @@ class CreateFlowsTable extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->string('name');
-            $table->bigInteger('bot_id');
+            $table->bigInteger('bot_id')->unsigned()->index();
             $table->timestamps();
             $table->unique(['name', 'bot_id']);
+
+            $table->foreign('bot_id')
+                ->references('id')
+                ->on('bots')
+                ->onDelete('cascade');
         });
     }
 

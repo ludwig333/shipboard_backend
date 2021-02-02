@@ -13,7 +13,8 @@ use App\Http\Controllers\API\v1\FlowController;
 use App\Http\Controllers\API\v1\MessageController;
 use App\Http\Controllers\API\v1\ContentController;
 use App\Http\Controllers\API\v1\TextController;
-use App\Http\Controllers\ImageController;
+use App\Http\Controllers\API\v1\ImageController;
+use App\Http\Controllers\API\v1\CardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,10 +65,19 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('texts', TextController::class);
         /** Text API Endpoints End */
 
-        /** Text API Endpoints Start */
+        /** Image API Endpoints Start */
         Route::post('/image/upload-image/{image}', [ImageController::class, 'uploadImage']);
         Route::apiResource('images', ImageController::class);
-        /** Text API Endpoints End */
+        /** Image API Endpoints End */
+
+        /** Cards API Endpoints Start */
+        Route::post('/card/{group}', [CardController::class, 'addCard']);
+        Route::put('/card/{card}', [CardController::class, 'updateCard']);
+        Route::delete('/card/{card}', [CardController::class, 'deleteCard']);
+        Route::post('/card/upload-image/{card}', [CardController::class, 'uploadImage']);
+        Route::post('/card-groups', [CardController::class,'createCardGroup']);
+        Route::delete('/card-groups/{groups}', [CardController::class, 'destroyCardGroup']);
+        /** Cards API Endpoints End */
 
     });
 });

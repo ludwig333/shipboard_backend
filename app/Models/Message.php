@@ -9,6 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\TextResource;
 use App\Http\Resources\ImageResource;
 use App\Http\Resources\CardResource;
+use App\Http\Resources\CardGroupResource;
 
 class Message extends Model
 {
@@ -53,8 +54,8 @@ class Message extends Model
                 array_push($contentData, new TextResource($content->child));
             } else if ($content->content_type == Image::class) {
                 array_push($contentData, new ImageResource($content->child));
-            } else if ($content->content_type == Card::class) {
-                array_push($contentData, new CardResource($content->child));
+            } else if ($content->content_type == CardGroup::class) {
+                array_push($contentData, new CardGroupResource($content->child));
             }
         }
         return $contentData;

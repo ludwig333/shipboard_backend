@@ -26,8 +26,15 @@ class Image extends Model
     {
         parent::boot();
 
-        static::creating(function ($text) {
-            $text->uuid = Str::uuid();
+        static::creating(function ($image) {
+            $image->uuid = Str::uuid();
+        });
+
+        static::deleting(function ($image) {
+            //Delete image store if it exists
+            if($image->imageStore) {
+                $image->imageStore->delete();
+            }
         });
     }
 

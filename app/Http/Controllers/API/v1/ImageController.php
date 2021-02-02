@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\v1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseAPIController;
@@ -38,7 +38,6 @@ class ImageController extends BaseAPIController
     {
         try {
             DB::beginTransaction();
-
             $message = Message::where('uuid', $request->input('message'))->first();
 
             $image = Image::create();
@@ -57,7 +56,7 @@ class ImageController extends BaseAPIController
             DB::rollBack();
             Log::error($exception);
 
-            return $this->sendError('Failed to create text.');
+            return $this->sendError('Failed to create image.');
         }
     }
 
@@ -71,10 +70,8 @@ class ImageController extends BaseAPIController
     {
         try {
             DB::beginTransaction();
-
+            //We delete the content which will automatically delete the image and also the image store if exists
             $image->content->delete();
-            $image->delete();
-
             DB::commit();
             return $this->sendResponse([], 'Image deleted successfully.', Response::HTTP_NO_CONTENT);
 

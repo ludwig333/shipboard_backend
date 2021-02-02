@@ -70,10 +70,8 @@ class TextController extends BaseAPIController
     {
         try {
             DB::beginTransaction();
-
+            //First we delete the content which will automatically trigger the delete of text
             $text->content->delete();
-            $text->delete();
-
             DB::commit();
             return $this->sendResponse([], 'Text deleted successfully.', Response::HTTP_NO_CONTENT);
 

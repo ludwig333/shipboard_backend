@@ -49,7 +49,6 @@ class AuthController extends BaseAPIController
     public function login(UserLoginRequest $request)
     {
         try {
-            Log::info('loggin in');
             if(auth()->attempt($request->getLoginCredentials())) {
                 return $this->sendResponse($this->getUserWithToken(auth()->user()), 'Logged in successfully.', Response::HTTP_OK);
             } else {

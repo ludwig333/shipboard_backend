@@ -17,12 +17,17 @@ class CreateMessagesTable extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->string('name');
-            $table->bigInteger('flow_id');
+            $table->bigInteger('flow_id')->unsigned()->index();
             $table->bigInteger('next_message_id')->default(0);
             $table->double('position_x');
             $table->double('position_y');
             $table->integer('is_start')->default(0);
             $table->timestamps();
+
+            $table->foreign('flow_id')
+                ->references('id')
+                ->on('flows')
+                ->onDelete('cascade');
         });
     }
 
