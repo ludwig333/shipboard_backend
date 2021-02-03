@@ -16,11 +16,12 @@ class ImageResource extends JsonResource
      */
     public function toArray($request)
     {
+        $image = $this->getImage();
         return [
             'id' => $this->uuid,
             'type' => BuilderContentType::IMAGE,
-            'height' => 150,
-            'imagePreviewUrl' => $this->getImage(),
+            'height' => $image ? 180 : 150,
+            'imagePreviewUrl' => $image,
             'selectedImage' => 'null'
         ];
     }
