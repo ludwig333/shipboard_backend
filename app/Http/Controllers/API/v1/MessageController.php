@@ -12,6 +12,7 @@ use App\Models\Message;
 use Illuminate\Http\Response;
 use App\Http\Resources\MessageResource;
 use App\Http\Requests\UpdateMessageRequest;
+use Illuminate\Support\Facades\DB;
 
 class MessageController extends BaseAPIController
 {
@@ -78,7 +79,7 @@ class MessageController extends BaseAPIController
     public function update(Message $message, UpdateMessageRequest $request)
     {
         try {
-            $message->update($request->all());
+            $message->update($request->validatedData());
 
             return $this->sendResponse(new MessageResource($message), 'Message updated successfully.', Response::HTTP_ACCEPTED);
 
@@ -88,5 +89,27 @@ class MessageController extends BaseAPIController
             return $this->sendError('Failed to update message.');
         }
 
+    }
+
+    /**
+     * Create a new message and connect this message to the requested message edge
+     * @param Message $message
+     */
+    public function createAndConnect(Message $message, CreateMessageRequest $request) {
+        try {
+            DB::beginTransaction();
+            $newMessage = Message::create($request->validatedData());
+            $message->update([
+                'next_message_id' => $newMessage->id
+            ]);
+            DB::commit();
+            return $this->sendResponse(new MessageResource($newMessage), 'Message created and connected successfully.', Response::HTTP_CREATED);
+
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            Log::error($exception);
+
+            return $this->sendError('Failed to create and connect message.');
+        }
     }
 }

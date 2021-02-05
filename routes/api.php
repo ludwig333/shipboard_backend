@@ -54,6 +54,7 @@ Route::group(['prefix' => 'v1'], function () {
         /** Flow API Endpoints End */
 
         /** Message API Endpoints Start */
+        Route::post('message/create-and-connect/{message}', [MessageController::class, 'createAndConnect']);
         Route::apiResource('messages', MessageController::class);
         /** Message API Endpoints End */
 

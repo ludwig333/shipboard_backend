@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Message;
 
 class MessageResource extends JsonResource
 {
@@ -14,6 +15,7 @@ class MessageResource extends JsonResource
      */
     public function toArray($request)
     {
+        $nextMessage = $this->next_message_id ? Message::find($this->next_message_id)->uuid : null;
        return [
            'id' => $this->uuid,
            'name' => $this->name,
@@ -25,6 +27,7 @@ class MessageResource extends JsonResource
            'isHover' => false,
            'isSelected' => false,
            'height' => 200,
+           'next' => $nextMessage
        ];
     }
 }

@@ -52,7 +52,7 @@ class AuthController extends BaseAPIController
             if(auth()->attempt($request->getLoginCredentials())) {
                 return $this->sendResponse($this->getUserWithToken(auth()->user()), 'Logged in successfully.', Response::HTTP_OK);
             } else {
-                return $this->sendError('Invalid Credentials', [], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Invalid Credentials', [], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         } catch (\Exception $exception) {
             return $this->sendError('Invalid data provided', $exception->getMessage(), Response::HTTP_BAD_REQUEST);

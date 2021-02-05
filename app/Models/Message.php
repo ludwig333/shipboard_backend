@@ -20,7 +20,8 @@ class Message extends Model
         'name',
         'flow_id',
         'position_x',
-        'position_y'
+        'position_y',
+        'next_message_id'
     ];
 
     /**
@@ -34,6 +35,15 @@ class Message extends Model
 
         static::creating(function ($message) {
             $message->uuid = Str::uuid();
+        });
+
+        static::deleting(function ($message) {
+            $connectedMessage = Message::where('next_message_id', $message->id)->first();
+            if($connectedMessage) {
+                $connectedMessage->update([
+                    'next_message_id' => 0
+                ]);
+            }
         });
     }
 
