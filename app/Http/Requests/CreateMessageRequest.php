@@ -26,6 +26,7 @@ class CreateMessageRequest extends FormRequest
     {
         return [
             'name' => 'required',
+            'type' => 'sometimes',
             'flow' =>  'required|exists:flows,uuid',
             'position_x' => 'required',
             'position_y' => 'required',
@@ -36,6 +37,7 @@ class CreateMessageRequest extends FormRequest
         $flow = Flow::where('uuid', $this->input('flow'))->first();
         return [
             'name' => $this->input('name'),
+            'type' => $this->input('type'),
             'flow_id' => $flow->id,
             'position_x' => $this->input('position_x'),
             'position_y' => $this->input('position_y')

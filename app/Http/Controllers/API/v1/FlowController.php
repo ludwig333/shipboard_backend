@@ -36,6 +36,22 @@ class FlowController extends BaseAPIController
     }
 
     /**
+     * Return detail of flow
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|mixed
+     */
+    public function show(Flow $flow)
+    {
+        try {
+            return $this->sendResponse(new FlowResource($flow, true), 'Flow retrieved successfully.', Response::HTTP_ACCEPTED);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return $this->sendError('Failed to retrieve bot.');
+        }
+    }
+
+    /**
      * Create a flow under bot
      *
      * @param CreateFlowRequest $request

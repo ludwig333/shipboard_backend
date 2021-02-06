@@ -34,4 +34,8 @@ class Flow extends Model
     {
         return 'uuid';
     }
+
+    public function messages() {
+        return $this->hasMany(Message::class)->orderBy('id', 'ASC');
+    }
 }

@@ -5,10 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\v1\AuthController;
 use App\Http\Controllers\API\v1\FolderController;
 use App\Http\Controllers\API\v1\BotController;
-use App\Models\Flow;
-use App\Models\Message;
-use App\Models\Content;
-use App\Models\Text;
 use App\Http\Controllers\API\v1\FlowController;
 use App\Http\Controllers\API\v1\MessageController;
 use App\Http\Controllers\API\v1\ContentController;
@@ -54,6 +50,7 @@ Route::group(['prefix' => 'v1'], function () {
         /** Flow API Endpoints End */
 
         /** Message API Endpoints Start */
+        Route::post('message/connect-flow/{message}', [MessageController::class, 'connectFlow']);
         Route::post('message/create-and-connect/{message}', [MessageController::class, 'createAndConnect']);
         Route::apiResource('messages', MessageController::class);
         /** Message API Endpoints End */

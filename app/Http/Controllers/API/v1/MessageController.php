@@ -112,4 +112,31 @@ class MessageController extends BaseAPIController
             return $this->sendError('Failed to create and connect message.');
         }
     }
+
+    public function connectFlow(Message $message, Request $request) {
+        try {
+            //Same function is used to update flow and remove flow connection
+            $this->validate($request, [
+                'flow' => 'sometimes|exists:flows,uuid'
+            ]);
+            DB::beginTransaction();
+            $nextMessageId = 0;
+            if($request->has('flow')) {
+                $flow = Flow::where('uuid', $request->input('flow'))->first();
+                $nextMessage = $flow->messages->first();
+                $nextMessageId = $nextMessage->id;
+            }
+            $message->update([
+                'next_message_id' => $nextMessageId
+            ]);
+            DB::commit();
+            return $this->sendResponse([], 'Flow connected to message successfully.', Response::HTTP_ACCEPTED);
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+
+            return $this->sendError('Failed to connect flow to message.');
+        }
+    }
 }

@@ -21,7 +21,8 @@ class Message extends Model
         'flow_id',
         'position_x',
         'position_y',
-        'next_message_id'
+        'next_message_id',
+        'type'
     ];
 
     /**

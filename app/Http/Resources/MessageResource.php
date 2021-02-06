@@ -17,6 +17,7 @@ class MessageResource extends JsonResource
     {
         $nextMessage = $this->next_message_id ? Message::find($this->next_message_id)->uuid : null;
        return [
+           'type' => $this->type,
            'id' => $this->uuid,
            'name' => $this->name,
            'position' => [
