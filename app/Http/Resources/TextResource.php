@@ -20,7 +20,8 @@ class TextResource extends JsonResource
             'id' => $this->uuid,
             'type' => BuilderContentType::TEXT,
             'value' => $this->body,
-            'height' => $this->getHeight($this->body)
+            'height' => $this->height,
+            'buttons' => ButtonResource::collection($this->buttons())
         ];
     }
 

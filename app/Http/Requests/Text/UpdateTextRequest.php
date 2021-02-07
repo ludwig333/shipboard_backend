@@ -24,7 +24,8 @@ class UpdateTextRequest extends FormRequest
     public function rules()
     {
         return [
-            'text' => 'required|min:2'
+            'text' => 'required|min:2',
+            'height' => 'required'
         ];
     }
 }

@@ -4,82 +4,56 @@ namespace App\Http\Controllers\API\v1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseAPIController;
+use App\Models\Button;
+use App\Http\Requests\Button\CreateButtonRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Resources\TextResource;
+use Illuminate\Http\Response;
+use App\Http\Resources\ButtonResource;
 
 class ButtonController extends BaseAPIController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function store(CreateButtonRequest $request) {
+        try {
+            DB::beginTransaction();
+
+            $button = Button::create($request->validatedData());
+
+            DB::commit();
+
+            return $this->sendResponse(new ButtonResource($button), 'Button created successfully.', Response::HTTP_CREATED);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+
+            return $this->sendError('Failed to create button.');
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function update(Button $button) {
+        try {
+            DB::beginTransaction();
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+
+            return $this->sendError('Failed to update button.');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function destroy(Button $button) {
+        try {
+            DB::beginTransaction();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            return $this->sendError('Failed to delete button.');
+        }
     }
 }

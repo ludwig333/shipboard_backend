@@ -11,6 +11,7 @@ use App\Http\Controllers\API\v1\ContentController;
 use App\Http\Controllers\API\v1\TextController;
 use App\Http\Controllers\API\v1\ImageController;
 use App\Http\Controllers\API\v1\CardController;
+use App\Http\Controllers\API\v1\ButtonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,13 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/card-groups', [CardController::class,'createCardGroup']);
         Route::delete('/card-groups/{groups}', [CardController::class, 'destroyCardGroup']);
         /** Cards API Endpoints End */
+
+        /** Button API Endpoints Start */
+        Route::post('/button', [ButtonController::class, 'store']);
+        Route::put('/button/{button}', [ButtonController::class, 'update']);
+        Route::delete('/button/{button}', [ButtonController::class, 'destroy']);
+        /** Button API Endpoints End */
+
 
     });
 });

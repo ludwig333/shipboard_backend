@@ -12,7 +12,8 @@ class Text extends Model
     protected $table="texts";
 
     protected $fillable = [
-        'body'
+        'body',
+        'height'
     ];
 
     /**
@@ -36,5 +37,12 @@ class Text extends Model
 
     public function content() {
         return $this->belongsTo(Content::class, 'id', 'content_id');
+    }
+
+    public function buttons() {
+        return Button::where([
+            'parent' => Text::class,
+            'parent_id' => $this->id
+        ])->get();
     }
 }

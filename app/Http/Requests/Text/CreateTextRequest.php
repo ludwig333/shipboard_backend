@@ -27,7 +27,8 @@ class CreateTextRequest extends FormRequest
         return [
             'text' => 'required|min:2',
             'message' => 'required|exists:messages,uuid',
-            'position' => 'required|integer'
+            'position' => 'required|integer',
+            'height' => 'required'
         ];
     }
 }

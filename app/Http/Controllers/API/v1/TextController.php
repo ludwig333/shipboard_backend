@@ -39,7 +39,8 @@ class TextController extends BaseAPIController
             $message = Message::where('uuid', $request->input('message'))->first();
 
             $text = Text::create([
-                'body' => $request->input('text')
+                'body' => $request->input('text'),
+                'height' => $request->input('height')
             ]);
 
             Content::create([
@@ -87,7 +88,8 @@ class TextController extends BaseAPIController
     {
         try {
             $text->update([
-                'body' => $request->input('text')
+                'body' => $request->input('text'),
+                'height' => $request->input('height')
             ]);
 
             return $this->sendResponse(new TextResource($text), 'Text updated successfully.', Response::HTTP_ACCEPTED);
