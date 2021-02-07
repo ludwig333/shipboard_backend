@@ -80,9 +80,11 @@ Route::group(['prefix' => 'v1'], function () {
         /** Cards API Endpoints End */
 
         /** Button API Endpoints Start */
-        Route::post('/button', [ButtonController::class, 'store']);
-        Route::put('/button/{button}', [ButtonController::class, 'update']);
-        Route::delete('/button/{button}', [ButtonController::class, 'destroy']);
+        Route::post('button/connect-flow/{button}', [ButtonController::class, 'connectFlow']);
+        Route::post('button/create-and-connect/{button}', [ButtonController::class, 'createAndConnect']);
+        Route::post('button', [ButtonController::class, 'store']);
+        Route::put('button/{button}', [ButtonController::class, 'update']);
+        Route::delete('button/{button}', [ButtonController::class, 'destroy']);
         /** Button API Endpoints End */
     });
 });

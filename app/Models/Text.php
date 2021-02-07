@@ -28,6 +28,12 @@ class Text extends Model
         static::creating(function ($text) {
             $text->uuid = Str::uuid();
         });
+
+        static::deleting(function ($text) {
+            foreach($text->buttons() as $button) {
+                $button->delete();
+            }
+        });
     }
 
     public function getRouteKeyName()

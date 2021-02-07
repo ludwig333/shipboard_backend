@@ -45,6 +45,12 @@ class Message extends Model
                     'next_message_id' => 0
                 ]);
             }
+            $connectedButton = Button::where('leads_to_message', $message->id)->first();
+            if($connectedButton) {
+                $connectedButton->update([
+                    'leads_to_message' => 0
+                ]);
+            }
         });
     }
 
