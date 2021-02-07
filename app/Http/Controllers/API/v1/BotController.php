@@ -9,6 +9,13 @@ use App\Models\Bot;
 use Illuminate\Http\Response;
 use App\Http\Requests\Bot\UpdateBotRequest;
 use App\Http\Resources\BotResource;
+use App\Http\Requests\Bot\UpdatePlatformConfiguration;
+use Illuminate\Support\Facades\DB;
+use App\Constants\PlatformType;
+use App\Models\TelegramConfiguration;
+use App\Services\TelegramServices;
+use App\Models\SlackConfiguration;
+use App\Models\MessengerConfiguration;
 
 class BotController extends BaseAPIController
 {
@@ -90,5 +97,29 @@ class BotController extends BaseAPIController
     public function show(Bot $bot)
     {
         return $this->sendResponse(new BotResource($bot), 'Bot retrieved successfully.', Response::HTTP_OK);
+    }
+
+    public function updateConfiguration(Bot $bot, UpdatePlatformConfiguration $request) {
+        try {
+            DB::beginTransaction();
+            if($request->get('platform') == PlatformType::TELEGRAM) {
+                $config = TelegramConfiguration::updateOrCreate(['bot_id' => $bot->id], $request->validatedData());
+                $config->connections()->updateOrCreate(['bot_id' => $bot->id, 'connectable_type' => TelegramConfiguration::class]);
+                (new TelegramServices())->register($config->access_token, $bot->uuid);
+            } else if($request->get('platform') == PlatformType::SLACK) {
+                $config = SlackConfiguration::updateOrCreate(['bot_id' => $bot->id], $request->validatedData());
+                $config->connections()->updateOrCreate(['bot_id' => $bot->id, 'connectable_type' => SlackConfiguration::class]);
+            } else if($request->get('platform') == PlatformType::MESSENGER) {
+                $config = MessengerConfiguration::updateOrCreate(['bot_id' => $bot->id], $request->validatedData());
+                $config->connections()->updateOrCreate(['bot_id' => $bot->id, 'connectable_type' => MessengerConfiguration::class]);
+            }
+            DB::commit();
+            return $this->sendResponse([], 'Bot Configuration updated successfully.', Response::HTTP_ACCEPTED);
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            return $this->sendError('Failed to update configuration.');
+        }
     }
 }

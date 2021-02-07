@@ -39,6 +39,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
         /** Bot API Endpoints Start */
+        Route::post('configure-bot/{bot}', [BotController::class, 'updateConfiguration'])->name('bots.configure');
         Route::apiResource('bots', BotController::class);
         /** Bot API Endpoints End */
 
@@ -83,8 +84,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('/button/{button}', [ButtonController::class, 'update']);
         Route::delete('/button/{button}', [ButtonController::class, 'destroy']);
         /** Button API Endpoints End */
-
-
     });
 });
 

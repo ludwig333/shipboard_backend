@@ -33,4 +33,9 @@ class Bot extends Model
     {
         return 'uuid';
     }
+
+    public function configurations()
+    {
+        return $this->hasMany(BotConnection::class, 'bot_id')->with('connectable');
+    }
 }
