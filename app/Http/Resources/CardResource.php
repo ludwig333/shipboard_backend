@@ -28,17 +28,7 @@ class CardResource extends JsonResource
            'selectedImage' => null,
            'heading' => $this->title,
            'body' => $this->body,
-           'height' => $this->getHeight($this->body)
+           'height' => $this->height
        ];
-    }
-
-    public function getHeight($string) {
-        $array = explode("\n", $string);
-        $numberOfLines = null;
-        foreach($array as $line) {
-            $numberOfCharacter = strlen($line);
-            $numberOfLines += ceil($numberOfCharacter / 37);
-        }
-        return $numberOfLines * 22 + 250;
     }
 }

@@ -16,7 +16,8 @@ class CreateTextsTable extends Migration
         Schema::create('texts', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('body');
+            $table->text('body');
+            $table->double('height');
             $table->timestamps();
         });
     }

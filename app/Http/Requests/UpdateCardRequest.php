@@ -25,19 +25,23 @@ class UpdateCardRequest extends FormRequest
     {
         return [
             'heading' => 'sometimes',
-            'body' => 'sometimes'
+            'body' => 'sometimes',
+            'height' => 'sometimes'
         ];
     }
 
     public function validatedData() {
         $data = [
             'title' => $this->input('heading'),
-            'body' => $this->input('body')
+            'body' => $this->input('body'),
+            'height' => $this->input('height')
         ];
         if(!$this->has('heading')) {
             unset($data['title']);
         } else if(!$this->has('body')) {
             unset($data['body']);
+        } else if(!$this->has('height')) {
+            unset($data['height']);
         }
         return $data;
     }

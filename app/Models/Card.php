@@ -17,7 +17,8 @@ class Card extends Model
         'title',
         'body',
         'group_id',
-        'image_store_id'
+        'image_store_id',
+        'height'
     ];
 
     /**

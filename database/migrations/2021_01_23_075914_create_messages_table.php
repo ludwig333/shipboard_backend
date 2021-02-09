@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Constants\MessageType;
 
 class CreateMessagesTable extends Migration
 {
@@ -22,6 +23,7 @@ class CreateMessagesTable extends Migration
             $table->double('position_x');
             $table->double('position_y');
             $table->integer('is_start')->default(0);
+            $table->string("type")->default(MessageType::DEFAULT);
             $table->timestamps();
 
             $table->foreign('flow_id')

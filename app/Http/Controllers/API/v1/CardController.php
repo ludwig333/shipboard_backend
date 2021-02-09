@@ -43,7 +43,8 @@ class CardController extends BaseAPIController
             Card::create([
                 'title' => 'Subtitle #1',
                 'body' => 'This is body paragraph.',
-                'group_id' => $cardGroup->id
+                'group_id' => $cardGroup->id,
+                'height' => $request->input('height')
             ]);
             DB::commit();
             return $this->sendResponse(new CardGroupResource($cardGroup), 'Card Group created successfully.', Response::HTTP_CREATED);
@@ -93,7 +94,8 @@ class CardController extends BaseAPIController
             $card = Card::create([
                 'title' => 'Subtitle #'. ($cardCount + 1),
                 'body' => 'This is body paragraph.',
-                'group_id' => $cardGroup->id
+                'group_id' => $cardGroup->id,
+                'height' => 276
             ]);
             return $this->sendResponse( new CardResource($card, 1), 'Card created successfully.', Response::HTTP_CREATED);
 

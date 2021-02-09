@@ -25,7 +25,8 @@ class CreateCardGroupRequest extends FormRequest
     {
         return [
             'message' => 'required|exists:messages,uuid',
-            'position' => 'required|integer'
+            'position' => 'required|integer',
+            'height' => 'required'
         ];
     }
 }

@@ -17,9 +17,10 @@ class CreateCardsTable extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->string('title');
-            $table->string('body');
+            $table->text('body');
             $table->string('image_store_id')->nullable();
             $table->bigInteger('group_id')->unsigned()->index();
+            $table->double('height');
             $table->timestamps();
         });
     }
