@@ -25,7 +25,8 @@ class UpdateButtonRequest extends FormRequest
     public function rules()
     {
         return [
-            'next' => 'sometimes|exists:messages,uuid'
+            'next' => 'sometimes|exists:messages,uuid',
+            'name' => 'sometimes'
         ];
     }
 
@@ -34,6 +35,9 @@ class UpdateButtonRequest extends FormRequest
         if($this->has('next')) {
             $message = Message::where('uuid', $this->input('next'))->first();
             $data['leads_to_message'] = $message->id;
+        }
+        if($this->has('name')) {
+            $data['name'] = $this->input('name');
         }
 
         return $data;

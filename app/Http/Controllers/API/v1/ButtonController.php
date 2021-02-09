@@ -41,6 +41,7 @@ class ButtonController extends BaseAPIController
             DB::beginTransaction();
             $button->update($request->validatedData());
             DB::commit();
+            return $this->sendResponse(new ButtonResource($button), 'Button updated successfully.', Response::HTTP_ACCEPTED);
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception);
@@ -52,8 +53,9 @@ class ButtonController extends BaseAPIController
     public function destroy(Button $button) {
         try {
             DB::beginTransaction();
-
+            $button->delete();
             DB::commit();
+            return $this->sendResponse([], 'Button deleted successfully.', Response::HTTP_NO_CONTENT);
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception);
