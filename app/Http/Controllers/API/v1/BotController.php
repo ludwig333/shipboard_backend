@@ -16,6 +16,7 @@ use App\Models\TelegramConfiguration;
 use App\Services\TelegramServices;
 use App\Models\SlackConfiguration;
 use App\Models\MessengerConfiguration;
+use App\Http\Resources\BotConnectionResource;
 
 class BotController extends BaseAPIController
 {
@@ -97,6 +98,15 @@ class BotController extends BaseAPIController
     public function show(Bot $bot)
     {
         return $this->sendResponse(new BotResource($bot), 'Bot retrieved successfully.', Response::HTTP_OK);
+    }
+
+    public function getConfigurations(Bot $bot) {
+        try {
+            return $this->sendResponse(BotConnectionResource::collection($bot->configurations), 'Bot Configuration updated successfully.', Response::HTTP_ACCEPTED);
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return $this->sendError('Failed to update configuration.');
+        }
     }
 
     public function updateConfiguration(Bot $bot, UpdatePlatformConfiguration $request) {

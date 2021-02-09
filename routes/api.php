@@ -39,6 +39,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
         /** Bot API Endpoints Start */
+        Route::get('configure-bot/{bot}', [BotController::class, 'getConfigurations']);
         Route::post('configure-bot/{bot}', [BotController::class, 'updateConfiguration'])->name('bots.configure');
         Route::apiResource('bots', BotController::class);
         /** Bot API Endpoints End */
