@@ -12,6 +12,13 @@ use App\Models\MessengerConfiguration;
 use App\Constants\PlatformType;
 use App\Models\TelegramConfiguration;
 use App\Models\SlackConfiguration;
+use App\Models\CardGroup;
+use App\Models\Image;
+use App\Utilities\ButtonMaker;
+use App\Utilities\ImageMaker;
+use App\Utilities\CardMaker;
+use App\Utilities\TextMaker;
+use App\Utilities\BotMaker;
 
 class PublishFlowsCommand extends Command
 {
@@ -81,14 +88,18 @@ class PublishFlowsCommand extends Command
             $messageClassFile = fopen($flowFolder.'/'.$className.'.php', 'w')
             or die("Unable to open class!");
 
-            $botLogic = $this->getBotLogic($message);
+            $botLogic = (new BotMaker())->make($message);
             $contents =
                 "<?php\n"
                 .$nameSpace
                 ."use BotMan\BotMan\Messages\Conversations\Conversation;\n"
                 ."use BotMan\BotMan\Messages\Incoming\Answer;\n"
                 ."use BotMan\BotMan\Messages\Outgoing\Question;\n"
-                ."use BotMan\BotMan\Messages\Outgoing\Actions\Button;\n\n"
+                ."use BotMan\BotMan\Messages\Outgoing\Actions\Button;\n"
+                ."use BotMan\Drivers\Facebook\Extensions\ButtonTemplate;\n"
+                ."use BotMan\Drivers\Facebook\Extensions\ElementButton;\n"
+                ."use BotMan\Drivers\Facebook\Extensions\GenericTemplate;\n"
+                ."use BotMan\Drivers\Facebook\Extensions\Element;\n"
 
                 ."class $className extends Conversation {\n"
                 ."\tpublic function run() {\n"
@@ -99,71 +110,6 @@ class PublishFlowsCommand extends Command
 
             fclose($messageClassFile);
         }
-    }
-
-    private function getBotLogic($message) {
-       try {
-           $contents = $message->contents;
-           $methods = "\n";
-           foreach($contents as $content) {
-               if($content->content_type == Text::class) {
-                   $text = $content->child;
-                   $body = $text->body;
-                   $buttons = $text->buttons();
-                   if($buttons->count() > 0) {
-                       $textButtons = $this->getButtons($buttons);
-                       $buttonArrays = $textButtons["array"];
-                       $buttonConditions = $textButtons["conditions"];
-                       $methods = $methods
-                        ."\t\t\$question = Question::create('". str_replace(array("\r","\n"),"",nl2br($body))."')\n"
-                        ."\t\t\t->addButtons(["
-                        ."\t\t\t\t$buttonArrays"
-                        ."]);\n"
-                        ."\t\t\$this->ask(\$question, function (Answer \$answer) {\n"
-                        ."\t\t\tif(\$answer->isInteractiveMessageReply()) {\n"
-                        ."\t\t\t\t\$selectedValue = \$answer->getValue();\n"
-                        ."\t\t\t\t$buttonConditions"
-                        ."\t\t\t}\n"
-                        ."\t\t});\n";
-                   } else {
-                       $methods = $methods . "\t\t\$this->say('".str_replace(array("\r","\n"),"",nl2br($body))."');\n";
-                   }
-               }
-           }
-           return $methods;
-       } catch (\Exception $exception) {
-           dd($exception->getMessage());
-       }
-    }
-
-    public function getButtons($buttons) {
-
-        $buttonText = "";
-        $conditions = "";
-        $count = 1;
-        foreach($buttons as $button) {
-            $buttonName = $button->name;
-            $buttonId = "BV".str_replace("-", "", $button->uuid);
-            $message = Message::where('id', $button->leads_to_message)->first();
-            $messageUUID = "M".str_replace("-", "", $message->uuid);
-            $buttonText = $buttonText."\tButton::create('".$buttonName."')->value('".$buttonId."'),";
-            if($count == 1) {
-                $conditions = $conditions
-                    ."if(\$selectedValue == '$buttonId') {\n"
-                    ."\t\t\t\t\t\$this->bot->startConversation(new $messageUUID);"
-                    ."}\n";
-            } else  {
-                $conditions = $conditions
-                    ."\t\t\t\telse if(\$selectedValue == '$buttonId') {\n"
-                    ."\t\t\t\t\t\$this->bot->startConversation(new $messageUUID);"
-                    ."}\n";
-            }
-            $count++;
-        }
-        return [
-            'array' => $buttonText,
-            'conditions' => $conditions
-        ];
     }
 
     private function getPlatform($connection) {

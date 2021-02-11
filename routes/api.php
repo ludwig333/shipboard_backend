@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\v1\AuthController;
 use App\Http\Controllers\API\v1\FolderController;
@@ -13,20 +12,8 @@ use App\Http\Controllers\API\v1\ImageController;
 use App\Http\Controllers\API\v1\CardController;
 use App\Http\Controllers\API\v1\ButtonController;
 use App\Http\Controllers\Bot\TelegramBotController;
-use App\Models\Bot;
-use App\Models\TelegramConfiguration;
-use BotMan\BotMan\Drivers\DriverManager;
-use BotMan\Drivers\Telegram\TelegramDriver;
-use BotMan\BotMan\BotManFactory;
-use BotMan\BotMan\BotMan;
-use App\Models\Flow;
-use App\Models\Message;
-use Illuminate\Support\Facades\Log;
-use BotMan\BotMan\Messages\Outgoing\Question;
-use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use BotMan\BotMan\Messages\Incoming\Answer;
-use App\Http\Controllers\Web\Back\App\Platforms\MessengerBotController;
 use App\Http\Controllers\Bot\SlackBotController;
+use App\Http\Controllers\Bot\MessengerBotController;
 
 /*
 |--------------------------------------------------------------------------

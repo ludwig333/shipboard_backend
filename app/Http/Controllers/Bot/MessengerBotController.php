@@ -1,25 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Web\Back\App\Platforms;
+namespace App\Http\Controllers\Bot;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bot;
 use Illuminate\Http\Request;
-use App\Models\Bot\Bot;
 use BotMan\BotMan\Drivers\DriverManager;
 use BotMan\BotMan\BotManFactory;
 use BotMan\BotMan\BotMan;
-use App\Models\Bot\BotCommand;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use App\Models\Bot\FacebookConfiguration;
 use BotMan\Drivers\Facebook\FacebookDriver;
 use App\Models\MessengerConfiguration;
 use BotMan\Drivers\Facebook\Extensions\ButtonTemplate;
 use BotMan\Drivers\Facebook\Extensions\ElementButton;
+use BotMan\Drivers\Facebook\Extensions\GenericTemplate;
+use BotMan\Drivers\Facebook\Extensions\Element;
+use App\Http\Controllers\Bot\UserBots\U1\B1\F1\M97817734920942ce84959c26dc939e56;
 
 class MessengerBotController extends Controller
 {
-    public function __invoke($id, Request $request)
+    public function reply($id, Request $request)
     {
         $bot = Bot::where('uuid', $id)->first();
         $botId = $bot->id;
@@ -47,16 +46,8 @@ class MessengerBotController extends Controller
 //        $botman->middleware->received(new ReceivedMiddleware($id));
 
         // Give the bot something to listen for.
-        $botman->hears('(.*)', function (BotMan $bot) use($botId) {
-            $bot->reply(ButtonTemplate::create('Do you want to know more about BotMan?')
-                ->addButton(ElementButton::create('Tell me more')
-                    ->type('postback')
-                    ->payload('tellmemore')
-                )
-                ->addButton(ElementButton::create('Show me the docs')
-                    ->url('http://botman.io/')
-                )
-            );
+        $botman->hears('start', function($bot) {
+            $bot->startConversation(new M97817734920942ce84959c26dc939e56);
         });
 
         // Start listening

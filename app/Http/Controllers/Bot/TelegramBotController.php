@@ -10,6 +10,7 @@ use App\Models\TelegramConfiguration;
 use BotMan\Drivers\Telegram\TelegramDriver;
 use BotMan\BotMan\Cache\LaravelCache;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Bot\UserBots\U1\B1\F1\M97817734920942ce84959c26dc939e56;
 
 class TelegramBotController extends Controller
 {
@@ -28,11 +29,7 @@ class TelegramBotController extends Controller
             $botman = BotManFactory::create($config, new LaravelCache());
 
             $botman->hears('start', function($bot) {
-                $bot->startConversation(new UserBots\U1\B1\Slack\F1\Mc3426e14afa44929a1e44390d531743d);
-            });
-
-            $botman->hears('start', function($bot){
-               $bot->reply('stared');
+                $bot->startConversation(new M97817734920942ce84959c26dc939e56);
             });
 
             // Start listening
