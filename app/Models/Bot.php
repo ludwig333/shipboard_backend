@@ -38,4 +38,8 @@ class Bot extends Model
     {
         return $this->hasMany(BotConnection::class, 'bot_id')->with('connectable');
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

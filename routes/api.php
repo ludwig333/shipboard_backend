@@ -12,6 +12,21 @@ use App\Http\Controllers\API\v1\TextController;
 use App\Http\Controllers\API\v1\ImageController;
 use App\Http\Controllers\API\v1\CardController;
 use App\Http\Controllers\API\v1\ButtonController;
+use App\Http\Controllers\Bot\TelegramBotController;
+use App\Models\Bot;
+use App\Models\TelegramConfiguration;
+use BotMan\BotMan\Drivers\DriverManager;
+use BotMan\Drivers\Telegram\TelegramDriver;
+use BotMan\BotMan\BotManFactory;
+use BotMan\BotMan\BotMan;
+use App\Models\Flow;
+use App\Models\Message;
+use Illuminate\Support\Facades\Log;
+use BotMan\BotMan\Messages\Outgoing\Question;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
+use BotMan\BotMan\Messages\Incoming\Answer;
+use App\Http\Controllers\Web\Back\App\Platforms\MessengerBotController;
+use App\Http\Controllers\Bot\SlackBotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +103,14 @@ Route::group(['prefix' => 'v1'], function () {
         Route::delete('button/{button}', [ButtonController::class, 'destroy']);
         /** Button API Endpoints End */
     });
+
+    /**
+     * Bot endpoints
+     */
+    Route::match(['get', 'post'], '/telegram/{id}',[TelegramBotController::class,'reply']);
+    Route::match(['get', 'post'], '/messenger/{id}',[MessengerBotController::class,'reply']);
+    Route::match(['get', 'post'], '/slack/{id}',[SlackBotController::class,'reply']);
+
 });
 
 

@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/app/Http/Controllers/Bot/UserBots
+/bots
 /storage/*.key
 /vendor
 .env

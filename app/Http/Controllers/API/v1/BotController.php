@@ -105,7 +105,7 @@ class BotController extends BaseAPIController
             return $this->sendResponse(BotConnectionResource::collection($bot->configurations), 'Bot Configuration updated successfully.', Response::HTTP_ACCEPTED);
         } catch (\Exception $exception) {
             Log::error($exception);
-            return $this->sendError('Failed to update configuration.');
+            return $this->sendError('Failed to fetch configuration.');
         }
     }
 

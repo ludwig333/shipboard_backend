@@ -16,7 +16,7 @@ class TelegramServices {
                 .'/setWebhook';
 
             if (! $remove) {
-                $url .= '?url='.env("TARGET_URL").'/telegram/'.$bot_id;
+                $url .= '?url='.env("TARGET_URL").'/api/v1/telegram/'.$bot_id;
             }
 
             $output = json_decode(file_get_contents($url));
@@ -30,6 +30,7 @@ class TelegramServices {
 
             return true;
         } catch (\Exception $exception) {
+            Log::error($exception);
             return false;
         }
     }

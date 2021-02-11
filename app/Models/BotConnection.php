@@ -13,7 +13,7 @@ class BotConnection extends Model
 
     public function bot()
     {
-        return $this->belongsTo(Bot::class, 'id', 'bot_id');
+        return $this->belongsTo(Bot::class);
     }
     public function connectable()
     {

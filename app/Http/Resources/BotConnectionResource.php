@@ -24,7 +24,8 @@ class BotConnectionResource extends JsonResource
                 'access_token' => $this->connectable->access_token,
                 'app_secret' => $this->connectable->app_secret,
                 'verification_code' => $this->connectable->verification_code,
-                'connect_status' => $this->connectable->connect_status
+                'connect_status' => $this->connectable->connect_status,
+                'callback_url' => env('TARGET_URL')."/messenger/".$this->bot->uuid
             ];
         } else if ( $this->connectable_type == TelegramConfiguration::class) {
             return [
@@ -37,7 +38,8 @@ class BotConnectionResource extends JsonResource
             return [
                 'platform' => PlatformType::SLACK,
                 'access_token' => $this->connectable->access_token,
-                'connect_status' => $this->connectable->connect_status
+                'connect_status' => $this->connectable->connect_status,
+                'callback_url' => env('TARGET_URL')."/messenger/".$this->bot->uuid
             ];
         }
     }

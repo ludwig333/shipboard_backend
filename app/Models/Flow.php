@@ -38,4 +38,8 @@ class Flow extends Model
     public function messages() {
         return $this->hasMany(Message::class)->orderBy('id', 'ASC');
     }
+
+    public function bot() {
+        return $this->belongsTo(Bot::class);
+    }
 }
