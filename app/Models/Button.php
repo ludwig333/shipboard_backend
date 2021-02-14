@@ -11,7 +11,7 @@ class Button extends Model
     use HasFactory;
     protected $table = 'buttons';
     protected $fillable = [
-      'name', 'type', 'parent', 'parent_id', 'leads_to_message'
+      'name', 'type', 'parent', 'parent_id', 'leads_to_message', 'url'
     ];
 
     /**

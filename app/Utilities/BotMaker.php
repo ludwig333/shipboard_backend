@@ -14,7 +14,7 @@ class BotMaker {
     {
         try{
             $contents = $message->contents;
-            $methods = "\n";
+            $methods = "";
             $textMaker = new TextMaker();
             $imageMaker = new ImageMaker();
             $cardMaker = new CardMaker();
@@ -22,15 +22,15 @@ class BotMaker {
             foreach ($contents as $content) {
                 if ($content->content_type == Text::class) {
                     $text = $content->child;
-                    $methods = $methods . $textMaker->make($text);
+                    $methods = $methods. "\n" .$textMaker->make($text);
                 }
                 else if ($content->content_type == Image::class) {
                     $image = $content->child;
-                    $methods = $methods . $imageMaker->make($image);
+                    $methods = $methods. "\n" .$imageMaker->make($image);
                 }
                 else if ($content->content_type == CardGroup::class) {
                     $cardGroup = $content->child;
-                    $methods = $methods . $cardMaker->make($cardGroup);
+                    $methods = $methods. "\n" .$cardMaker->make($cardGroup);
                 }
             }
             return $methods;

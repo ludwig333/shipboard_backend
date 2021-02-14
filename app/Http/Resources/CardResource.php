@@ -28,7 +28,8 @@ class CardResource extends JsonResource
            'selectedImage' => null,
            'heading' => $this->title,
            'body' => $this->body,
-           'height' => $this->height
+           'height' => $this->height,
+           'buttons' => ButtonResource::collection($this->buttons())
        ];
     }
 }

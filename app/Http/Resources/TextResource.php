@@ -24,14 +24,4 @@ class TextResource extends JsonResource
             'buttons' => ButtonResource::collection($this->buttons())
         ];
     }
-
-    public function getHeight($string) {
-        $array = explode("\n", $string);
-        $numberOfLines = null;
-        foreach($array as $line) {
-            $numberOfCharacter = strlen($line);
-            $numberOfLines += ceil($numberOfCharacter / 37);
-        }
-        return $numberOfLines * 25 + 10;
-    }
 }

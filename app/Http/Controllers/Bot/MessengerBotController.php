@@ -15,42 +15,55 @@ use BotMan\Drivers\Facebook\Extensions\ElementButton;
 use BotMan\Drivers\Facebook\Extensions\GenericTemplate;
 use BotMan\Drivers\Facebook\Extensions\Element;
 use App\Http\Controllers\Bot\UserBots\U1\B1\F1\M97817734920942ce84959c26dc939e56;
+use Illuminate\Support\Facades\Log;
+use BotMan\BotMan\Cache\LaravelCache;
+use BotMan\BotMan\Messages\Outgoing\Question;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
+use BotMan\BotMan\Messages\Incoming\Answer;
+use App\Http\Controllers\Bot\UserBots\U1\B1\F1\Mb8c5859db5a24207ab39dfd30922811d;
+use App\Http\Controllers\Bot\UserBots\U1\B2\F2\M131c1204abb34ec08b015ea7833440f1;
+use BotMan\BotMan\Messages\Attachments\Image;
+use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 
 class MessengerBotController extends Controller
 {
     public function reply($id, Request $request)
     {
         $bot = Bot::where('uuid', $id)->first();
-        $botId = $bot->id;
-        $config = MessengerConfiguration::where('bot_id', $bot->id)->first();
-        if($request->get('hub_mode') == 'subscribe') {
-            if($request->get('hub_verify_token') == $config->verification_code) {
-                return $request->get('hub_challenge');
+        if($bot->connect_status == 1) {
+            $config = MessengerConfiguration::where('bot_id', $bot->id)->first();
+            if($request->get('hub_mode') == 'subscribe') {
+                if($request->get('hub_verify_token') == $config->verification_code) {
+                    return $request->get('hub_challenge');
+                }
             }
+            // Load the driver(s) you want to use
+            DriverManager::loadDriver(FacebookDriver::class);
+            $config = [
+                'facebook' => [
+                    'token' => $config->access_token,
+                    'app_secret' => $config->app_secret,
+                    'verification'=> $config->verification_code,
+                ]
+            ];
+            // Load the driver(s) you want to use
+            DriverManager::loadDriver(\BotMan\Drivers\Facebook\FacebookDriver::class);
+            // Create an instance
+            $botman = BotManFactory::create($config, new LaravelCache());
+
+            $botman->hears('start', function($bot) {
+                $firstFlow = $bot->flows->first();
+                if ($firstFlow) {
+                    $firstMessage = $firstFlow->messages->first();
+                    if($firstMessage) {
+                        $className = "M" . str_replace("-", "", $firstMessage->uuid);
+                        $bot->startConversation(new $className("facebook"));
+                    }
+                }
+            });
+
+            // Start listening
+            $botman->listen();
         }
-        // Load the driver(s) you want to use
-        DriverManager::loadDriver(FacebookDriver::class);
-        $config = [
-            'facebook' => [
-                'token' => $config->access_token,
-                'app_secret' => $config->app_secret,
-                'verification'=> $config->verification_code,
-            ]
-        ];
-        // Load the driver(s) you want to use
-        DriverManager::loadDriver(\BotMan\Drivers\Facebook\FacebookDriver::class);
-        // Create an instance
-        $botman = BotManFactory::create($config);
-
-        //Applying middleware
-//        $botman->middleware->received(new ReceivedMiddleware($id));
-
-        // Give the bot something to listen for.
-        $botman->hears('start', function($bot) {
-            $bot->startConversation(new M97817734920942ce84959c26dc939e56);
-        });
-
-        // Start listening
-        $botman->listen();
     }
 }

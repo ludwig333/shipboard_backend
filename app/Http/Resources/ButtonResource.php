@@ -19,7 +19,9 @@ class ButtonResource extends JsonResource
         return [
             'id' => $this->uuid,
             'name' => $this->name,
-            'next' => $message ? $message->uuid : null
+            'type' => $this->type,
+            'next' => $message ? $message->uuid : null,
+            'url' => isset($this->url) ? $this->url : null
         ];
     }
 }

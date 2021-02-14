@@ -42,4 +42,8 @@ class Bot extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function flows() {
+        return $this->hasMany(Flow::class);
+    }
 }

@@ -52,6 +52,13 @@ class Card extends Model
         return $this->belongsTo(Card::class, 'group_id');
     }
 
+    public function buttons() {
+        return Button::where([
+            'parent' => Card::class,
+            'parent_id' => $this->id
+        ])->get();
+    }
+
     public function imageStore()
     {
         return $this->belongsTo(ImageStore::class, 'image_store_id');

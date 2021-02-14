@@ -5,19 +5,10 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use App\Models\Flow;
-use App\Constants\BuilderContentType;
-use App\Models\Text;
-use App\Models\Message;
 use App\Models\MessengerConfiguration;
 use App\Constants\PlatformType;
 use App\Models\TelegramConfiguration;
 use App\Models\SlackConfiguration;
-use App\Models\CardGroup;
-use App\Models\Image;
-use App\Utilities\ButtonMaker;
-use App\Utilities\ImageMaker;
-use App\Utilities\CardMaker;
-use App\Utilities\TextMaker;
 use App\Utilities\BotMaker;
 
 class PublishFlowsCommand extends Command
@@ -59,13 +50,7 @@ class PublishFlowsCommand extends Command
                 $bot= $flow->bot;
                 $user = $bot->user;
                 $messages = $flow->messages;
-                $configurations = $bot->configurations;
                 $this->publishBotClasses($user, $bot, $flow, $messages);
-//                foreach($configurations as $configuration) {
-//                    $connection = $configuration->connectable_type;
-//                    $platform = $this->getPlatform($connection);
-//                    $this->publishBotClasses($user, $bot, $flow, $messages, $platform);
-//                }
             }
         } catch (\Exception $exception) {
             Log::error($exception);
@@ -100,12 +85,18 @@ class PublishFlowsCommand extends Command
                 ."use BotMan\Drivers\Facebook\Extensions\ElementButton;\n"
                 ."use BotMan\Drivers\Facebook\Extensions\GenericTemplate;\n"
                 ."use BotMan\Drivers\Facebook\Extensions\Element;\n"
+                ."use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;\n"
+                ."use BotMan\BotMan\Messages\Attachments\Image;\n"
 
                 ."class $className extends Conversation {\n"
+                ."\tprivate \$platform;\n\n"
+                ."\tpublic function __construct(\$platform) {\n"
+                ."\t\t\$this->platform = \$platform;\n"
+                ."\t}\n\n"
                 ."\tpublic function run() {\n"
                 .$botLogic
                 ."\t}\n"
-                ."}";
+                ."}\n\n";
             fwrite($messageClassFile, trim($contents));
 
             fclose($messageClassFile);

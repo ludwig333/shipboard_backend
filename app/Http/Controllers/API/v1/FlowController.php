@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Response;
 use App\Models\Bot;
 use App\Http\Requests\Flow\UpdateFlowRequest;
+use Illuminate\Support\Facades\Artisan;
 
 
 class FlowController extends BaseAPIController
@@ -104,5 +105,18 @@ class FlowController extends BaseAPIController
             return $this->sendError('Failed to update flow.');
         }
 
+    }
+
+    public function publish(Flow $flow) {
+        try {
+            Artisan::call('publish:flow', [
+                'flow' => $flow->uuid
+            ]);
+            return $this->sendResponse([], 'Flow published successfully.', Response::HTTP_ACCEPTED);
+        } catch (\Exception $exception) {
+            Log::error($exception);
+
+            return $this->sendError('Failed to update flow.');
+        }
     }
 }

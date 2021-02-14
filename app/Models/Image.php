@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class Image extends Model
 {
@@ -50,6 +51,12 @@ class Image extends Model
     public function imageStore()
     {
         return $this->belongsTo(ImageStore::class, 'image_store_id');
+    }
+
+    public function getImageUrl() {
+        if($this->imageStore) {
+            return asset('/storage/'.$this->imageStore->path);
+        }
     }
 
     public function getImage()

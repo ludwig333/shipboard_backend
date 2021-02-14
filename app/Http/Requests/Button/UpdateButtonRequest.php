@@ -4,6 +4,7 @@ namespace App\Http\Requests\Button;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Message;
+use App\Constants\ButtonType;
 
 class UpdateButtonRequest extends FormRequest
 {
@@ -26,7 +27,8 @@ class UpdateButtonRequest extends FormRequest
     {
         return [
             'next' => 'sometimes|exists:messages,uuid',
-            'name' => 'sometimes'
+            'name' => 'sometimes',
+            'url' => 'sometimes|url'
         ];
     }
 
@@ -35,9 +37,15 @@ class UpdateButtonRequest extends FormRequest
         if($this->has('next')) {
             $message = Message::where('uuid', $this->input('next'))->first();
             $data['leads_to_message'] = $message->id;
+            $data['type'] = ButtonType::DEFAULT;
+
         }
         if($this->has('name')) {
             $data['name'] = $this->input('name');
+        }
+        if($this->has('url')) {
+            $data['url'] = $this->input('url');
+            $data['type'] = ButtonType::URL;
         }
 
         return $data;
