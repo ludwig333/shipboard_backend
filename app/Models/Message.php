@@ -10,6 +10,7 @@ use App\Http\Resources\TextResource;
 use App\Http\Resources\ImageResource;
 use App\Http\Resources\CardResource;
 use App\Http\Resources\CardGroupResource;
+use App\Constants\MessageType;
 
 class Message extends Model
 {
@@ -59,21 +60,32 @@ class Message extends Model
         return 'uuid';
     }
 
+    public function flow() {
+        return $this->belongsTo(Flow::class);
+    }
     public function contents() {
         return $this->hasMany(Content::class)->orderBy('index');
     }
 
     public function getContents() {
         $contentData= [];
-        $contents = $this->contents;
-        foreach($contents as $content) {
-            if($content->content_type == Text::class) {
-                array_push($contentData, new TextResource($content->child));
-            } else if ($content->content_type == Image::class) {
-                array_push($contentData, new ImageResource($content->child));
-            } else if ($content->content_type == CardGroup::class) {
-                array_push($contentData, new CardGroupResource($content->child));
+        if ( $this->type == MessageType::DEFAULT) {
+            $contents = $this->contents;
+            foreach($contents as $content) {
+                if($content->content_type == Text::class) {
+                    array_push($contentData, new TextResource($content->child));
+                } else if ($content->content_type == Image::class) {
+                    array_push($contentData, new ImageResource($content->child));
+                } else if ($content->content_type == CardGroup::class) {
+                    array_push($contentData, new CardGroupResource($content->child));
+                }
             }
+        } else if ($this->type == MessageType::FLOW) {
+            $nextMessage = self::find($this->next_message_id);
+            $flow = $nextMessage->flow;
+            array_push($contentData,[
+                'name' => $flow->name
+            ] );
         }
         return $contentData;
     }
