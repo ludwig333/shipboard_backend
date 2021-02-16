@@ -14,6 +14,7 @@ use App\Http\Controllers\API\v1\ButtonController;
 use App\Http\Controllers\Bot\TelegramBotController;
 use App\Http\Controllers\Bot\SlackBotController;
 use App\Http\Controllers\Bot\MessengerBotController;
+use Illuminate\Support\Facades\File;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,13 +30,42 @@ use App\Http\Controllers\Bot\MessengerBotController;
 //    return $request->user();
 //});
 
+Route::get('img', function (\Illuminate\Http\Request $request) {
+  $path = $request->input('path');
+  if($path) {
+      $path = storage_path('app/public/'. $path);
+      if (!File::exists($path)) {
+          abort(404);
+      }
+      $file = File::get($path);
+      $type = File::mimeType($path);
+      $response = response()->make($file, 200);
+      $response->header("Content-Type", $type);
+      return $response;
+  }
+});
 
 Route::group(['prefix' => 'v1'], function () {
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('forgot-password', [AuthController::class, 'forgot'])->name('forgot');
     Route::post('reset-password', [AuthController::class, 'reset'])->name('reset');
-
+//    Route::get('storage/{filename}', function ($filename)
+//    {
+//        $path = storage_path('public/' . $filename);
+//
+//        if (!File::exists($path)) {
+//            abort(404);
+//        }
+//
+//        $file = File::get($path);
+//        $type = File::mimeType($path);
+//
+//        $response = response()->make($file, 200);
+//        $response->header("Content-Type", $type);
+//
+//        return $response;
+//    });
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user', [AuthController::class, 'userInfo'])->name('auth-user');
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');

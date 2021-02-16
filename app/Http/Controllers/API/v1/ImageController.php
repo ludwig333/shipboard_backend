@@ -93,7 +93,7 @@ class ImageController extends BaseAPIController
                 $imageName = time().'.'.$request->file('image')->extension();
 
                 $path = $request->file('image')->storeAs(
-                    'images/'.auth()->user()->id, $imageName,
+                    ''.auth()->user()->id, $imageName,
                     'public'
                 );
 

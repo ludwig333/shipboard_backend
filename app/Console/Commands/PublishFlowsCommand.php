@@ -63,9 +63,8 @@ class PublishFlowsCommand extends Command
     private function publishBotClasses($user, $bot, $flow, $messages) {
         $userId = $user->id;
         $botId = $bot->id;
-        $flowId = $flow->id;
-        $flowFolder = $this->getPath(app_path().'/Http/Controllers/Bot/UserBots/U'.$userId.'/B'.$botId.'/F'.$flowId);
-        $nameSpace =  "namespace App\Http\Controllers\Bot\UserBots\\U".$userId."\\B".$botId."\\F".$flowId.";\n\n";
+        $flowFolder = $this->getPath(app_path().'/Http/Controllers/Bot/UserBots/U'.$userId.'/B'.$botId);
+        $nameSpace =  "namespace App\Http\Controllers\Bot\UserBots\\U".$userId."\\B".$botId.";\n\n";
 
         foreach($messages as $message) {
             $className = "M" . str_replace("-", "", $message->uuid);

@@ -5,10 +5,11 @@ namespace App\Utilities;
 
 
 use App\Models\Text;
+use App\Models\Message;
 
 class TextMaker {
     public function make(Text $text) {
-        $body = $text->body;
+        $body = str_replace("'", "\'", $text->body);
         $buttons = $text->buttons();
         if($buttons->count() > 0) {
             $textButtons = (new ButtonMaker())->make($buttons);
@@ -36,7 +37,24 @@ class TextMaker {
                 ."\t\t\t}\n"
                 ."\t\t});\n";
         } else {
-            return "\t\t\$this->say('".str_replace(array("\r","\n"),"",nl2br($body))."');\n";
+            return "\t\t\$this->say('$body');\n";
+        }
+    }
+
+    public function makeTextQuestion(Text $text, $nextMessage) {
+        $message = Message::where('id', $nextMessage)->first();
+        if($message) {
+//            $flow = $message->flow;
+//            $bot = $flow->bot;
+//            $botId = $bot->id;
+//            $userId = $bot->user->id;
+            $flowClass = str_replace("-", "", $message->uuid);
+            $className = 'M'.$flowClass;
+
+            $body = str_replace("'", "\'", $text->body);
+            return "\t\t\$this->ask('$body', function (Answer \$response) {\n"
+                ."\t\t\t\$this->bot->startConversation(new $className(\$this->platform));\n"
+                ."\t\t});";
         }
     }
 }

@@ -55,8 +55,9 @@ class Image extends Model
 
     public function getImageUrl() {
         if($this->imageStore) {
-            return asset('/storage/'.$this->imageStore->path);
+            return asset('/api/img?path='.$this->imageStore->path);
         }
+        return null;
     }
 
     public function getImage()

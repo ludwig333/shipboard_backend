@@ -64,6 +64,14 @@ class Card extends Model
         return $this->belongsTo(ImageStore::class, 'image_store_id');
     }
 
+    public function getImageUrl() {
+        if($this->imageStore) {
+            return asset('/api/img?path='.$this->imageStore->path);
+        }
+        return null;
+    }
+
+
     public function getImage()
     {
         if($this->imageStore) {

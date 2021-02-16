@@ -29,14 +29,14 @@ class MessengerBotController extends Controller
 {
     public function reply($id, Request $request)
     {
-        $bot = Bot::where('uuid', $id)->first();
-        if($bot->connect_status == 1) {
-            $config = MessengerConfiguration::where('bot_id', $bot->id)->first();
-            if($request->get('hub_mode') == 'subscribe') {
-                if($request->get('hub_verify_token') == $config->verification_code) {
-                    return $request->get('hub_challenge');
-                }
+        $myBot = Bot::where('uuid', $id)->first();
+        $config = MessengerConfiguration::where('bot_id', $myBot->id)->first();
+        if($request->get('hub_mode') == 'subscribe') {
+            if($request->get('hub_verify_token') == $config->verification_code) {
+                return $request->get('hub_challenge');
             }
+        }
+        if($myBot->connect_status == 1) {
             // Load the driver(s) you want to use
             DriverManager::loadDriver(FacebookDriver::class);
             $config = [
@@ -51,12 +51,16 @@ class MessengerBotController extends Controller
             // Create an instance
             $botman = BotManFactory::create($config, new LaravelCache());
 
-            $botman->hears('start', function($bot) {
-                $firstFlow = $bot->flows->first();
+            $botman->hears('start', function($bot) use($myBot) {
+                $firstFlow = $myBot->flows->first();
                 if ($firstFlow) {
                     $firstMessage = $firstFlow->messages->first();
                     if($firstMessage) {
-                        $className = "M" . str_replace("-", "", $firstMessage->uuid);
+                        $userId = $myBot->user->id;
+                        $botId = $myBot->id;
+                        $flowId = $firstMessage->id;
+                        $flowClass = str_replace("-", "", $firstMessage->uuid);
+                        $className = 'App\Http\Controllers\Bot\UserBots\U'.$userId.'\B'.$botId.'\F'.$flowId.'\M'.$flowClass;
                         $bot->startConversation(new $className("facebook"));
                     }
                 }

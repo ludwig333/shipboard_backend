@@ -46,25 +46,24 @@ class CardMaker {
     }
 
     private function getSingleCardElement($card, $type) {
-        $imageUrl = "https://botman.io/img/logo.png";
+        $url = $card->getImageUrl();
+        $imageUrl = $url ? $url : "https://botman.io/img/logo.png";
         $text = $card->title . '<br>' . $card->body;
         if ( $type == "telegram") {
             return
                 "\t\t\t// Create attachment\n"
-                ."\t\t\t\$attachment = new Image('$imageUrl', [\n"
-                ."\t\t\t\t'custom_payload' => true,\n"
-                ."\t\t\t]);\n\n"
+                ."\t\t\t\$attachment = new Image('$imageUrl');\n"
                 ."\t\t\t// Build message object\n"
                 ."\t\t\t\$message = OutgoingMessage::create('$text')\n"
                 ."\t\t\t\t->withAttachment(\$attachment);\n\n"
                 ."\t\t\t// Reply message object\n"
-                ."\t\t\t\$this->say(\$message);\n";
+                ."\t\t\t\$this->bot->reply(\$message);\n";
         }
         else if ($type == "facebook") {
             return
                 "\t\t\tElement::create('$card->title')\n"
                 ."\t\t\t\t\t\t->subtitle('$card->body')\n"
-                ."\t\t\t\t\t\t->image('http://botman.io/img/botman-body.png')\n"
+                ."\t\t\t\t\t\t->image('$imageUrl')\n"
                 ."\t\t\t\t\t\t->addButton(ElementButton::create('visit')\n"
                 ."\t\t\t\t\t\t->url('http://botman.io')\n"
                 ."\t\t\t\t\t)\n"
