@@ -30,6 +30,9 @@ class Content extends Model
 
         static::deleting(function ($content) {
             $content->child->delete();
+            foreach($content->child->buttons() as $button) {
+                $button->delete();
+            }
         });
     }
 

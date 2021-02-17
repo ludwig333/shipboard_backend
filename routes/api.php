@@ -82,6 +82,7 @@ Route::group(['prefix' => 'v1'], function () {
         /** Folder API Endpoints End */
 
         /** Flow API Endpoints Start */
+        Route::post('flow/install/booking-template/{id}', [FlowController::class, 'installBookingTemplate']);
         Route::post('flow/publish/{flow}', [FlowController::class, 'publish']);
         Route::apiResource('flows', FlowController::class);
         /** Flow API Endpoints End */

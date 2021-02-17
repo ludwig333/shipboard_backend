@@ -119,4 +119,19 @@ class FlowController extends BaseAPIController
             return $this->sendError('Failed to update flow.');
         }
     }
+
+    public function installBookingTemplate($id) {
+        try {
+            $bot = Bot::where('uuid', $id)->first();
+            Log::info($bot->name);
+            Artisan::call('install:booking-template',[
+                'bot' => $bot->id
+            ]);
+            return $this->sendResponse([], 'Flow installed successfully.', Response::HTTP_ACCEPTED);
+        } catch (\Exception $exception) {
+            Log::error($exception);
+
+            return $this->sendError('Failed to install flow.');
+        }
+    }
 }
