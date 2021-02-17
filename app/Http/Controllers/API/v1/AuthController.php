@@ -19,6 +19,10 @@ use Illuminate\Mail\Message;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\MessengerConfiguration;
+use App\Models\TelegramConfiguration;
+use App\Models\SlackConfiguration;
+use App\Models\Bot;
 
 class AuthController extends BaseAPIController
 {
@@ -132,5 +136,69 @@ class AuthController extends BaseAPIController
         $user->save();
 
         return $this->sendResponse( new UserResource($user), 'Successfully changed the password');
+    }
+
+
+    public function getOverview() {
+        try {
+            $user = auth()->user();
+            $inactiveBots = 0;
+            $activeBots = 0;
+            $totalBots = 0;
+            $data = [
+                'doughnut' => [],
+                'colors' =>  ['#00C6FF', '#0088CC', '#4A154B'],
+                'active' => 0,
+                'inactive' => 0,
+                'total' => 0
+            ];
+            $botConnections = DB::table('bot_connections')
+                ->select(DB::raw("COUNT(*) as total"), 'connectable_type')
+                ->leftJoin('bots', 'bots.id', '=', 'bot_connections.bot_id')
+                ->where('bots.user_id', $user->id)
+                ->groupBy(['connectable_type'])
+                ->get();
+            $bots = Bot::where('user_id', $user->id)->get();
+            foreach($bots as $bot) {
+                $totalBots++;
+                $configurations = $bot->configurations;
+                if($configurations) {
+                    $statuses = $configurations->pluck('connectable.connect_status');
+                    foreach($statuses as $status) {
+                        if ($status == 1) {
+                            $activeBots++;
+                        } else {
+                            $inactiveBots++;
+                        }
+                    }
+
+                }
+            }
+            foreach($botConnections as $connection) {
+              if ($connection->connectable_type == MessengerConfiguration::class) {
+                  array_push($data['doughnut'], [
+                      'name' => 'Messenger',
+                      'value' =>  $connection->total
+                  ]);
+                } else if ($connection->connectable_type == TelegramConfiguration::class) {
+                  array_push($data['doughnut'], [
+                      'name' => 'Telegram',
+                      'value' =>  $connection->total
+                  ]);
+                } else if ($connection->connectable_type == SlackConfiguration::class) {
+                    array_push($data['doughnut'], [
+                      'name' => 'Slack',
+                      'value' => $connection->total
+                  ]);
+                }
+            }
+           $data['active'] = $activeBots;
+           $data['inactive'] = $inactiveBots;
+           $data['total'] = $totalBots;
+            return $this->sendResponse([(object)$data], 'Bot Overview retrieved successfully.', Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return $this->sendError('Failed to retrieve overview.');
+        }
     }
 }

@@ -68,6 +68,7 @@ Route::group(['prefix' => 'v1'], function () {
 //    });
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user', [AuthController::class, 'userInfo'])->name('auth-user');
+        Route::get('overview', [AuthController::class, 'getOverview']);
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
         /** Bot API Endpoints Start */

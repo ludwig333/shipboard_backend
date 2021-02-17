@@ -82,10 +82,14 @@ class Message extends Model
             }
         } else if ($this->type == MessageType::FLOW) {
             $nextMessage = self::find($this->next_message_id);
-            $flow = $nextMessage->flow;
-            array_push($contentData,[
-                'name' => $flow->name
-            ] );
+            if($nextMessage) {
+                $flow = $nextMessage->flow;
+                if($flow) {
+                    array_push($contentData,[
+                        'name' => $flow->name
+                    ] );
+                }
+            }
         }
         return $contentData;
     }
