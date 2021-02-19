@@ -30,8 +30,14 @@ class Content extends Model
 
         static::deleting(function ($content) {
             $content->child->delete();
-            foreach($content->child->buttons() as $button) {
-                $button->delete();
+            if($content->type == Card::class) {
+                foreach($content->child->buttons() as $button) {
+                    $button->delete();
+                }
+            } else if ($content->type == CardGroup::class) {
+                foreach($content->child->getChildButtons() as $button) {
+                    $button->delete();
+                }
             }
         });
     }

@@ -88,10 +88,6 @@ class PublishFlowsCommand extends Command
                 ."use BotMan\BotMan\Messages\Attachments\Image;\n"
 
                 ."class $className extends Conversation {\n"
-                ."\tprivate \$platform;\n\n"
-                ."\tpublic function __construct(\$platform) {\n"
-                ."\t\t\$this->platform = \$platform;\n"
-                ."\t}\n\n"
                 ."\tpublic function run() {\n"
                 .$botLogic
                 ."\t}\n"

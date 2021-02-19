@@ -17,24 +17,28 @@ class ButtonMaker {
             $buttonName = $button->name;
             $buttonId = "BV".str_replace("-", "", $button->uuid);
             $next = $button->leads_to_message;
+            $url = $button->url;
             $message = Message::where('id', $next)->first();
             if($message) {
                 $messageUUID = "M".str_replace("-", "", $message->uuid);
-                $telegramButton = $telegramButton.$this->telegramButtonElement($buttonName, $buttonId, $button->type, $next);
-                $messengerButton = $messengerButton.$this->messengerButtonElement($buttonName, $buttonId, $button->type, $next);
+                $telegramButton = $telegramButton.$this->telegramButtonElement($buttonName, $buttonId, $button->type, $url);
+                $messengerButton = $messengerButton.$this->messengerButtonElement($buttonName, $buttonId, $button->type, $url);
 
                 if($count == 1) {
                     $conditions = $conditions
                         ."if(\$selectedValue == '$buttonId') {\n"
-                        ."\t\t\t\t\t\$this->bot->startConversation(new $messageUUID(\$platformName));"
+                        ."\t\t\t\t\t\$this->bot->startConversation(new $messageUUID);"
                         ."}\n";
                 } else  {
                     $conditions = $conditions
                         ."\t\t\t\telse if(\$selectedValue == '$buttonId') {\n"
-                        ."\t\t\t\t\t\$this->bot->startConversation(new $messageUUID(\$platformName));"
+                        ."\t\t\t\t\t\$this->bot->startConversation(new $messageUUID);"
                         ."}\n";
                 }
                 $count++;
+            } else {
+                $telegramButton = $telegramButton.$this->telegramButtonElement($buttonName, $buttonId, $button->type, $url);
+                $messengerButton = $messengerButton.$this->messengerButtonElement($buttonName, $buttonId, $button->type, $url);
             }
         }
 
@@ -45,7 +49,7 @@ class ButtonMaker {
         ];
     }
 
-    private function messengerButtonElement($buttonName, $buttonId, $type, $next) {
+    private function messengerButtonElement($buttonName, $buttonId, $type, $url) {
        if($type == ButtonType::DEFAULT) {
            return
                "\t\t\t\t->addButton(ElementButton::create('$buttonName')\n"
@@ -55,22 +59,22 @@ class ButtonMaker {
        }
        else if ($type == ButtonType::URL) {
            return
-               "->addButton(ElementButton::create($buttonName)\n"
-               ."\t->url($next)\n"
+               "->addButton(ElementButton::create('$buttonName')\n"
+               ."\t->url('$url')\n"
                .")";
        }
     }
 
 
 
-    private function telegramButtonElement($buttonName, $buttonId, $type, $next) {
+    private function telegramButtonElement($buttonName, $buttonId, $type,$url) {
         if($type == ButtonType::DEFAULT) {
             return
                 "Button::create('$buttonName')->value('$buttonId'),\n";
         }
         else if ($type == ButtonType::URL) {
             return
-                "\tButton::create('$buttonName')->url('$next')->value('go'),";
+                "\tButton::create('$buttonName')->url('$url')->value('go'),";
         }
     }
 }

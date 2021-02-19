@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Log;
 use BotMan\BotMan\Messages\Attachments\Image;
 use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 use BotMan\BotMan\BotMan;
+use App\Http\Controllers\Bot\UserBots\U1\B9\M01479574dcab419792ed00666d82bc2d;
+use App\Http\Controllers\Bot\UserBots\U1\B4\Ma4a19ef5061b47309f4c0cec6a617214;
 
 class TelegramBotController extends Controller
 {

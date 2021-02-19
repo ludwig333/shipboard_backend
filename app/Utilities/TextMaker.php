@@ -19,7 +19,8 @@ class TextMaker {
 
             return
                 "\t\t\t\$question=null;\n"
-                ."\t\tif (\$this->platform === \"telegram\") {\n"
+                ."\t\t\t\$platform = strtolower(\$this->bot->getDriver()->getName());"
+                ."\t\tif (\$platform === \"telegram\" || \$platform === \"slack\") {\n"
                 ."\t\t\t\$question = Question::create('". str_replace(array("\r","\n"),"",nl2br($body))."')\n"
                 ."\t\t\t\t->addButtons([\n"
                 ."\t\t\t\t\t$telegramButtonElement"
@@ -30,7 +31,6 @@ class TextMaker {
                 ."\t\t\t\t$messengerButtonElement\t\t\t\t;\n"
                 ."\t\t\t\t}\n\n"
                 ."\t\t\$this->ask(\$question, function (Answer \$answer) {\n"
-                ."\t\t\t\$platformName = strtolower(\$this->bot->getDriver()->getName());\n"
                 ."\t\t\tif(\$answer->isInteractiveMessageReply()) {\n"
                 ."\t\t\t\t\$selectedValue = \$answer->getValue();\n"
                 ."\t\t\t\t$buttonConditions"
@@ -53,7 +53,7 @@ class TextMaker {
 
             $body = str_replace("'", "\'", $text->body);
             return "\t\t\$this->ask('$body', function (Answer \$response) {\n"
-                ."\t\t\t\$this->bot->startConversation(new $className(\$this->platform));\n"
+                ."\t\t\t\$this->bot->startConversation(new $className);\n"
                 ."\t\t});";
         }
     }

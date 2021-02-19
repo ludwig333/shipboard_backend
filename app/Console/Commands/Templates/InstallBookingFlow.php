@@ -56,6 +56,7 @@ class InstallBookingFlow extends Command
                 'name' => 'Booking Template '.time(),
                 'bot_id' => $bot->id
             ]);
+            $welcomeMessage = $this->getStartMessage($flow);
             $endMessage = $this->endMessage($flow);
             $bookedInformation = $this->bookedInfo($flow);
             $confirmBooking = $this->confirmBooking($flow, $bookedInformation, $endMessage);
@@ -65,7 +66,8 @@ class InstallBookingFlow extends Command
             $askForPickUpTime = $this->askForPickUpTime($flow, $askForPickUpAddress);
             $askForPickUpDate = $this->askForPickUpDate($flow, $askForPickUpTime);
             $askForPhoneNumber = $this->askPhoneNumberMessage($flow, $askForPickUpDate);
-            $welcomeMessage = $this->getStartMessage($flow, $endMessage, $askForPhoneNumber);
+            //Add confirm to welcome message
+            $this->updateWelcomeMessage($welcomeMessage, $endMessage, $askForPhoneNumber);
 
             DB::commit();
             $this->info("Operation Completed");
@@ -76,7 +78,7 @@ class InstallBookingFlow extends Command
         }
     }
 
-    private function getStartMessage($flow, $endMessage, $askPhoneNumberMessage) {
+    private function getStartMessage($flow) {
         $startMessage = Message::create([
             'name' => 'Welcome Message',
             'type' => 'default',
@@ -105,6 +107,10 @@ class InstallBookingFlow extends Command
             'content_id' => $text->id,
             'index' => 2
         ]);
+        return $startMessage;
+    }
+
+    private function updateWelcomeMessage($startMessage, $endMessage, $askPhoneNumberMessage) {
         $text = Text::create([
             'body' => 'Would you like to book a taxi now.',
             'height' => 29
@@ -116,7 +122,6 @@ class InstallBookingFlow extends Command
             'content_id' => $text->id,
             'index' => 3
         ]);
-
         $buttonYes = Button::create([
             'name' => 'Yes',
             'type' => 'default',
@@ -132,8 +137,6 @@ class InstallBookingFlow extends Command
             'parent_id' => $text->id,
             'leads_to_message' => $endMessage->id
         ]);
-
-        return $startMessage;
     }
 
     private function askPhoneNumberMessage($flow, $askDateMessage) {

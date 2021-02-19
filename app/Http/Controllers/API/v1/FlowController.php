@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use App\Models\Bot;
 use App\Http\Requests\Flow\UpdateFlowRequest;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 
 class FlowController extends BaseAPIController
@@ -81,11 +82,22 @@ class FlowController extends BaseAPIController
     public function destroy(Flow $flow)
     {
         try {
+            DB::beginTransaction();
+            $firstMessage = $flow->messages->first();
+            if($firstMessage) {
+                DB::table('buttons')->where('leads_to_message', $firstMessage->id)->update([
+                    'leads_to_message' => 0
+                ]);
+                DB::table('messages')->where('next_message_id', $firstMessage->id)->update([
+                    'next_message_id' => 0
+                ]);
+            }
             $flow->delete();
-
+            DB::commit();
             return $this->sendResponse([], 'Flow deleted successfully.', Response::HTTP_NO_CONTENT);
 
         } catch (\Throwable $exception) {
+            DB::rollBack();
             Log::error($exception);
 
             return $this->sendError('Failed to delete flow.');

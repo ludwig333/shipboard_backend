@@ -59,4 +59,15 @@ class CardGroup extends Model
         }
         return $cardData;
     }
+
+    public function getChildButtons() {
+        $cards = $this->getCards();
+        if($cards) {
+            $cardIds = [];
+            foreach($cards as $card) {
+                array_push($cardIds, $card->id);
+            }
+        }
+        return Button::where('parent', Card::class)->whereIn('parent_id', $cardIds)->get();
+    }
 }

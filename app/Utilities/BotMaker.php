@@ -9,6 +9,7 @@ use App\Models\Text;
 use App\Models\CardGroup;
 use App\Models\Image;
 use App\Constants\MessageType;
+use Illuminate\Support\Facades\Log;
 
 class BotMaker {
     public function make(Message $message)
@@ -30,9 +31,7 @@ class BotMaker {
             }
 
         } catch (\Exception $exception) {
-            $this->error($exception->getLine());
-            $this->error($exception->getFile());
-            $this->error($exception->getMessage());
+            Log::error($exception);
         }
     }
 
@@ -57,7 +56,7 @@ class BotMaker {
             else if ($content->content_type == Image::class) {
                 $image = $content->child;
                 if($message->next_message_id != 0 && $totalContent == $count) {
-                    $methods = $methods . $this->makeImageQuestion($image);
+                    $methods = $methods . $imageMaker->makeImageQuestion($image, $message->next_message_id);
                 } else {
                     $methods = $methods. "\n" .$imageMaker->make($image);
                 }
@@ -65,7 +64,7 @@ class BotMaker {
             else if ($content->content_type == CardGroup::class) {
                 $cardGroup = $content->child;
                 if($message->next_message_id != 0 && $totalContent == $count) {
-                    $methods = $methods . $this->makeCardQuestion($cardGroup);
+                    $methods = $methods . $cardMaker->makeCardQuestion($cardGroup, $message->next_message_id);
                 } else {
                     $methods = $methods. "\n" .$cardMaker->make($cardGroup);
                 }
@@ -73,14 +72,8 @@ class BotMaker {
 
             $count++;
         }
+
         return $methods;
     }
 
-    private function makeImageQuestion($image) {
-
-    }
-
-    private function makeCardQuestion($card) {
-
-    }
 }
