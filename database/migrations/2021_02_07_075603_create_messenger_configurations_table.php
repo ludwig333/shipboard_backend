@@ -15,9 +15,9 @@ class CreateMessengerConfigurationsTable extends Migration
     {
         Schema::create('messenger_configurations', function (Blueprint $table) {
             $table->id();
-            $table->string('access_token');
-            $table->string('app_secret')->nullable();
-            $table->string('verification_code');
+            $table->longText('access_token');
+            $table->longText('app_secret')->nullable();
+            $table->text('verification_code');
             $table->tinyInteger('connect_status')->default(0);
             $table->foreignId('bot_id')->constrained('bots')->cascadeOnDelete();
             $table->timestamps();

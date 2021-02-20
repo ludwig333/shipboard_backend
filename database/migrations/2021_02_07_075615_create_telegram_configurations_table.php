@@ -16,7 +16,7 @@ class CreateTelegramConfigurationsTable extends Migration
         Schema::create('telegram_configurations', function (Blueprint $table) {
             $table->id();
             $table->string('username');
-            $table->string('access_token');
+            $table->longText('access_token');
             $table->tinyInteger('connect_status')->default(0);
             $table->foreignId('bot_id')->constrained('bots')->cascadeOnDelete();
             $table->timestamps();

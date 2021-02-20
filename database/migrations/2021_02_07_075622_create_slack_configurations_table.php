@@ -15,7 +15,7 @@ class CreateSlackConfigurationsTable extends Migration
     {
         Schema::create('slack_configurations', function (Blueprint $table) {
             $table->id();
-            $table->string('access_token');
+            $table->longText('access_token');
             $table->tinyInteger('connect_status')->default(0);
             $table->foreignId('bot_id')->constrained('bots')->cascadeOnDelete();
             $table->timestamps();
