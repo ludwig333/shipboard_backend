@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Client\Request;
 use App\Models\SlackConfiguration;
 use App\Models\Bot;
+use BotMan\BotMan\Drivers\DriverManager;
+use BotMan\BotMan\BotManFactory;
+use BotMan\BotMan\BotMan;
 
 class SlackBotController extends Controller
 {

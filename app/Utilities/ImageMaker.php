@@ -14,10 +14,10 @@ class ImageMaker {
         $imageUrl = $url ? $url: "https://botman.io/img/logo.png";
         $imageString = "\t\t";
         $imageString = $imageString.
-            "if ( \$this->platform == \"telegram\" || \"slack\") {\n"
+            "if ( \$platform == \"telegram\" || \"slack\") {\n"
                 .$this->getTelegramImageElement($imageUrl)
             ."\t\t}\n"
-            ."\t\telse if ( \$this->platform == \"facebook\") {\n"
+            ."\t\telse if ( \$platform == \"facebook\") {\n"
                 .$this->getMessengerImageElement($imageUrl)
             ."\t\t}\n"
         ;
@@ -43,7 +43,7 @@ class ImageMaker {
             $className = 'M'.$flowClass;
 
             return $imageString. "\t\t\$this->ask('', function (Answer \$response) {\n"
-                ."\t\t\t\$this->bot->startConversation(new $className(\$this->platform));\n"
+                ."\t\t\t\$this->bot->startConversation(new $className);\n"
                 ."\t\t});";
         }
     }

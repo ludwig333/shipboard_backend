@@ -76,7 +76,7 @@ class CardMaker {
         //If its the last card so for next step
         $nextMessageString = "";
         if($nextClass) {
-            $nextMessageString = " \$this->bot->startConversation(new $nextClass(\$this->platform));";
+            $nextMessageString = " \$this->bot->startConversation(new $nextClass);";
         }
         return  "\t\t\t\$question = GenericTemplate::create()\n"
                 ."\t\t\t\t->addImageAspectRatio(GenericTemplate::RATIO_SQUARE)\n"

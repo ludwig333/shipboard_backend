@@ -33,7 +33,7 @@ class TelegramBotController extends Controller
                 // Create an instance
                 $botman = BotManFactory::create($config, new LaravelCache());
 
-                $botman->hears('start', function($bot) use($myBot) {
+                $botman->hears('._(Hi|Hello|Start)._', function($bot) use($myBot) {
                     $firstFlow = $myBot->flows->first();
                     if ($firstFlow) {
                         $firstMessage = $firstFlow->messages->first();
@@ -42,7 +42,7 @@ class TelegramBotController extends Controller
                             $botId = $myBot->id;
                             $flowClass = str_replace("-", "", $firstMessage->uuid);
                             $className = 'App\Http\Controllers\Bot\UserBots\U'.$userId.'\B'.$botId.'\M'.$flowClass;
-                            $bot->startConversation(new $className("telegram"));
+                            $bot->startConversation(new $className);
                         }
                     }
                 });

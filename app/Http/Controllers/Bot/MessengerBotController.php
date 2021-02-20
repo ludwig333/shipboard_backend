@@ -46,7 +46,7 @@ class MessengerBotController extends Controller
             // Create an instance
             $botman = BotManFactory::create($config, new LaravelCache());
 
-            $botman->hears('start', function(Botman $bot) use($myBot) {
+            $botman->hears('._(Hi|Hello|Start)._', function(Botman $bot) use($myBot) {
                 $firstFlow = $myBot->flows->first();
                 if ($firstFlow) {
                     $firstMessage = $firstFlow->messages->first();
@@ -55,7 +55,7 @@ class MessengerBotController extends Controller
                         $botId = $myBot->id;
                         $flowClass = str_replace("-", "", $firstMessage->uuid);
                         $className = 'App\Http\Controllers\Bot\UserBots\U'.$userId.'\B'.$botId.'\M'.$flowClass;
-                        $bot->startConversation(new $className("facebook"));
+                        $bot->startConversation(new $className);
                     }
                 }
             });

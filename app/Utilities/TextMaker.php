@@ -26,7 +26,7 @@ class TextMaker {
                 ."\t\t\t\t\t$telegramButtonElement"
                 ."\t\t\t]);\n"
                 ."\t\t}\n"
-                ."\t\telse if (\$this->platform ===\"facebook\") {\n"
+                ."\t\telse if (\$platform ===\"facebook\") {\n"
                 ."\t\t\t\$question = ButtonTemplate::create('". str_replace(array("\r","\n"),"",nl2br($body))."')\n"
                 ."\t\t\t\t$messengerButtonElement\t\t\t\t;\n"
                 ."\t\t\t\t}\n\n"
