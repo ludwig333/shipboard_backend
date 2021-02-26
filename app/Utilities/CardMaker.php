@@ -105,7 +105,7 @@ class CardMaker {
     private function getSingleCardElement($card, $type) {
         $url = $card->getImageUrl();
         $imageUrl = $url ? $url : "https://botman.io/img/logo.png";
-        $text = $card->title . '<br>' . $card->body;
+        $text = $card->title . '\n' . $card->body;
         $buttons = $card->buttons();
         if ( $type == "telegram" || $type == "slack") {
             $cardString =  "\t\t\t// Create attachment\n"
