@@ -22,35 +22,41 @@ class SlackBotController extends Controller
             ];
         }
 
-        $bot = Bot::where('uuid', $id)->first();
-        $botId = $bot->id;
-        $config = SlackConfiguration::where('bot_id', $bot->id)->first();
+        $myBot = Bot::where('uuid', $id)->first();
+        $config = SlackConfiguration::where('bot_id', $myBot->id)->first();
         $config = [
             'slack' => [
                 'token' => $config->access_token
             ]
         ];
 
-        // Load the driver(s) you want to use
-        DriverManager::loadDriver(\BotMan\Drivers\Slack\SlackDriver::class);
-        // Create an instance
-        $botman = BotManFactory::create($config);
+        if($config && $config->connect_status == 1)
+        {
+            // Load the driver(s) you want to use
+            DriverManager::loadDriver(\BotMan\Drivers\Slack\SlackDriver::class);
+            // Create an instance
+            $botman = BotManFactory::create($config);
 
 
-        // Give the bot something to listen for.
-        $botman->hears('(.*)', function (BotMan $bot) use($botId) {
-            $message = $bot->getMessage()->getText();
+            $botman->hears('.*(Hi|Hello|Start).*', function (Botman $bot) use ($myBot) {
+                $firstFlow = $myBot->flows->first();
+                if ($firstFlow)
+                {
+                    $firstMessage = $firstFlow->messages->first();
+                    if ($firstMessage)
+                    {
+                        $userId = $myBot->user->id;
+                        $botId = $myBot->id;
+                        $flowClass = str_replace("-", "", $firstMessage->uuid);
+                        $className = 'App\Http\Controllers\Bot\UserBots\U' . $userId . '\B' . $botId . '\M' . $flowClass;
+                        $bot->startConversation(new $className);
+                    }
+                }
+            });
 
-            $command = BotCommand::where('bot_id', $botId)->where('command', $message)->first();
-            if($command) {
-                $bot->reply($command->response);
-            } else {
-                $bot->reply('Sorry could not understand YOU!!.');
-            }
-        });
-
-        // Start listening
-        $botman->listen();
+            // Start listening
+            $botman->listen();
+        }
     }
 
 }

@@ -32,8 +32,7 @@ class TelegramBotController extends Controller
                 DriverManager::loadDriver(TelegramDriver::class);
                 // Create an instance
                 $botman = BotManFactory::create($config, new LaravelCache());
-
-                $botman->hears('._(Hi|Hello|Start)._', function($bot) use($myBot) {
+                $botman->hears('.*(Hi|Hello|Start).*', function($bot) use($myBot) {
                     $firstFlow = $myBot->flows->first();
                     if ($firstFlow) {
                         $firstMessage = $firstFlow->messages->first();

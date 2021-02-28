@@ -46,7 +46,7 @@ class MessengerBotController extends Controller
             // Create an instance
             $botman = BotManFactory::create($config, new LaravelCache());
 
-            $botman->hears('._(Hi|Hello|Start)._', function(Botman $bot) use($myBot) {
+            $botman->hears('.*(Hi|Hello|Start).*', function(Botman $bot) use($myBot) {
                 $firstFlow = $myBot->flows->first();
                 if ($firstFlow) {
                     $firstMessage = $firstFlow->messages->first();
