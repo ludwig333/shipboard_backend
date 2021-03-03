@@ -23,14 +23,14 @@ class SlackBotController extends Controller
         }
 
         $myBot = Bot::where('uuid', $id)->first();
-        $config = SlackConfiguration::where('bot_id', $myBot->id)->first();
+        $connection = SlackConfiguration::where('bot_id', $myBot->id)->first();
         $config = [
             'slack' => [
-                'token' => $config->access_token
+                'token' => $connection->access_token
             ]
         ];
 
-        if($config && $config->connect_status == 1)
+        if($connection && $connection->connect_status == 1)
         {
             // Load the driver(s) you want to use
             DriverManager::loadDriver(\BotMan\Drivers\Slack\SlackDriver::class);
